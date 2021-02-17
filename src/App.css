@@ -1,0 +1,12 @@
+body {
+    background: #eee;
+  }
+  
+  .base-div {
+    background: #fff;
+    width: 60vw;
+    min-height: 20vh;
+    height: auto;
+    margin: auto;
+    margin-top: 5rem;
+  }
