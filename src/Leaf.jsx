@@ -38,6 +38,10 @@ const Leaf = ({ attributes, children, leaf }) => {
         children = <u>{children}</u>
     }
     
+    if(leaf.code) {
+        children = <code>{ children }</code>
+    }
+    
     return <span {...attributes} >{children}</span>
 }
 

@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { createEditor, Editor, Text, Transforms } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
-//import { BoldLeaf, DefaultLeaf, ItalicLeaf, UnderlineLeaf } from './Leaf'
 import Elements from './Elements'
 import './App.css'
 import Leaf from './Leaf'
@@ -127,6 +126,13 @@ const App = () => {
               }
             }
           >U</button>
+
+          <button onMouseDown={
+            (e) => {
+              e.preventDefault()
+              toggleMark(editor, "code")
+            }
+          } >Code</button>
 
         </div>
 
