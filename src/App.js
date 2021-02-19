@@ -155,10 +155,17 @@ const App = () => {
               case 'i':
                 event.preventDefault()
                 toggleMark(editor, "italic")
+                break
 
               case 'u':
                 event.preventDefault()
                 toggleMark(editor, "underline")
+                break
+
+              case '`':
+                event.preventDefault()
+                toggleMark(editor, "code")
+                break
 
               default: break
 

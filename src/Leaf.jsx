@@ -39,7 +39,7 @@ const Leaf = ({ attributes, children, leaf }) => {
     }
     
     if(leaf.code) {
-        children = <code>{ children }</code>
+        children = <code style={{ width: 'fit-content', height: 'fit-content', background: '#eee' }} >{ children }</code>
     }
     
     return <span {...attributes} >{children}</span>
