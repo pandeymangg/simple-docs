@@ -1,9 +1,10 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { createEditor, Editor, Transforms } from 'slate'
-import { Slate, Editable, withReact } from 'slate-react'
+import { Slate, Editable, withReact, useSlate } from 'slate-react'
 import Elements from './Elements'
 import './SlateEditor.css'
 import Leaf from './Leaf'
+import Button from './Buttons/Button'
 
 const SlateEditor = () => {
   const editor = useMemo(() => withReact(createEditor()), [])
@@ -28,34 +29,6 @@ const SlateEditor = () => {
   }, [])
 
   const renderLeaf = useCallback(props => {
-    // switch (props.leaf.type) {
-    //   case 'bold':
-    //     return <BoldLeaf {...props} />
-
-    //   case 'italic':
-    //     return <ItalicLeaf {...props} />
-
-    //   case 'underline':
-    //     return <UnderlineLeaf {...props} />
-
-    //   default: return <DefaultLeaf {...props} />
-    // }
-
-    // switch(props.leaf.type) {
-    //   case 'bold':
-    //     return <Leaf { ...props } />
-
-    //   case 'italic':
-    //     return <Leaf { ...props } />
-
-    //   case 'underline':
-    //     return <Leaf { ...props } />
-
-    //   default:
-    //     return <Leaf { ...props } />
-
-    // }
-
     return <Leaf {...props} />
 
   }, [])
@@ -66,6 +39,8 @@ const SlateEditor = () => {
       <Slate editor={editor} value={value} onChange={value => setValue(value)}>
 
         <div>
+
+          <MarkButton format="bold" icon="format_bold" />
 
           <button onMouseDown={
             (e) => {
@@ -177,12 +152,21 @@ const SlateEditor = () => {
   )
 }
 
-const isMarkActive = (editor, format) => {
-  // const [match] = Editor.nodes(editor, {
-  //   match: n => n.format === true
-  // })
+const MarkButton = ({ format, icon }) => {
+  const editor = useSlate()
+  return (
+    <Button
+      active={ isMarkActive(editor, format) }
+      onMouseDown={(e) => {
+        e.preventDefault()
+        toggleMark(editor, format)
+      }}
+      icon={ icon }
+    />
+  )
+}
 
-  // return !!match
+const isMarkActive = (editor, format) => {
   let marks = Editor.marks(editor)
   let returnValue = marks ? marks[format] === true : false
   return returnValue
@@ -190,12 +174,6 @@ const isMarkActive = (editor, format) => {
 
 const toggleMark = (editor, format) => {
   const isActive = isMarkActive(editor, format)
-
-  // Transforms.setNodes(
-  //   editor,
-  //   { [format]: isActive ? null : true },
-  //   { match: n => Text.isText(n), split: true }
-  // )
 
   if(isActive) {
     Editor.removeMark(editor, format) 

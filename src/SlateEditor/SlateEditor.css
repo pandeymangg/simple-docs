@@ -1,12 +1,29 @@
 body {
-    background: #eee;
-  }
-  
-  .base-div {
-    background: #fff;
-    width: 60vw;
-    min-height: 20vh;
-    height: auto;
-    margin: auto;
-    margin-top: 5rem;
-  }
+  background: #eee;
+}
+
+.base-div {
+  background: #fff;
+  width: 60vw;
+  min-height: 20vh;
+  height: auto;
+  margin: auto;
+  margin-top: 5rem;
+}
+
+.edit-button {
+  height: 2rem;
+  width: 2rem;
+  background-color: #fff;
+  border: 0;
+  cursor: pointer;
+  color: #d3d3d3;
+}
+
+.edit-button>span {
+  font-size: 1.2rem;
+}
+
+.edit-button-active {
+  color: black;
+}
