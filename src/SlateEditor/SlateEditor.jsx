@@ -41,6 +41,9 @@ const SlateEditor = () => {
         <div>
 
           <MarkButton format="bold" icon="format_bold" />
+          <MarkButton format="italic" icon="format_italic" />
+          <MarkButton format="underline" icon="format_underline" />
+          <MarkButton format="code" icon="code" />
 
           <button onMouseDown={
             (e) => {
@@ -73,41 +76,6 @@ const SlateEditor = () => {
               )
             }
           } >H2</button>
-
-
-          <button
-            onMouseDown={
-              (e) => {
-                e.preventDefault()
-                toggleMark(editor, "bold")
-              }
-            }
-          >B</button>
-
-          <button
-            onMouseDown={
-              (e) => {
-                e.preventDefault()
-                toggleMark(editor, "italic")
-              }
-            }
-          >I</button>
-
-          <button
-            onMouseDown={
-              (e) => {
-                e.preventDefault()
-                toggleMark(editor, "underline")
-              }
-            }
-          >U</button>
-
-          <button onMouseDown={
-            (e) => {
-              e.preventDefault()
-              toggleMark(editor, "code")
-            }
-          } >Code</button>
 
         </div>
 
