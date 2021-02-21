@@ -47,6 +47,9 @@ const SlateEditor = () => {
 
           <BlockButton format="heading-one" icon="looks_one" />
           <BlockButton format="heading-two" icon="looks_two" />
+          <BlockButton format="left" icon="format_align_left" />
+          <BlockButton format="center" icon="format_align_center" />
+          <BlockButton format="right" icon="format_align_right" />
 
         </div>
 

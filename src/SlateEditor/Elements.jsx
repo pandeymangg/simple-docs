@@ -6,6 +6,15 @@ const Elements = ({ attributes, children, element }) => {
         case 'heading-two':
             return <h2 {...attributes} >{ children }</h2>
 
+        case 'left':
+            return <p style={{ textAlign: 'left' }} { ...attributes } >{ children }</p>
+
+        case 'center':
+            return <p style={{ textAlign: 'center' }} { ...attributes } >{ children }</p>
+            
+        case 'right':
+            return <p style={{ textAlign: 'right' }} { ...attributes } >{ children }</p>
+
         default:
             return <p { ...attributes } >{ children }</p>
     }
