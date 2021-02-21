@@ -1,8 +1,13 @@
 import SlateEditor from './SlateEditor/SlateEditor'
+import Home from './Home'
+import { Route } from 'react-router-dom'
 
-function App () {
+function App() {
   return (
-    <SlateEditor />
+    <>
+      <Route path="/" exact component={Home} />
+      <Route path="/new" exact component={SlateEditor} />
+    </>
   )
 }
 
