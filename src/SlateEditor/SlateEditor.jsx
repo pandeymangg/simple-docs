@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { createEditor, Editor, Transforms } from 'slate'
+import { createEditor, Editor, Transforms, Element as SlateElement } from 'slate'
 import { Slate, Editable, withReact, useSlate } from 'slate-react'
 import Elements from './Elements'
 import './SlateEditor.css'
@@ -45,37 +45,8 @@ const SlateEditor = () => {
           <MarkButton format="underline" icon="format_underline" />
           <MarkButton format="code" icon="code" />
 
-          <button onMouseDown={
-            (e) => {
-              e.preventDefault()
-              const [match] = Editor.nodes(
-                editor,
-                { match: n => n.type === "heading-one" }
-              )
-
-              Transforms.setNodes(
-                editor,
-                { type: match ? 'paragraph' : 'heading-one' },
-                { match: n => Editor.isBlock(editor, n) }
-              )
-            }
-          } >H1</button>
-
-          <button onMouseDown={
-            (e) => {
-              e.preventDefault()
-              const [match] = Editor.nodes(
-                editor,
-                { match: n => n.type === "heading-two" }
-              )
-
-              Transforms.setNodes(
-                editor,
-                { type: match ? 'paragraph' : 'heading-two' },
-                { match: n => Editor.isBlock(editor, n) }
-              )
-            }
-          } >H2</button>
+          <BlockButton format="heading-one" icon="looks_one" />
+          <BlockButton format="heading-two" icon="looks_two" />
 
         </div>
 
@@ -124,12 +95,26 @@ const MarkButton = ({ format, icon }) => {
   const editor = useSlate()
   return (
     <Button
-      active={ isMarkActive(editor, format) }
+      active={isMarkActive(editor, format)}
       onMouseDown={(e) => {
         e.preventDefault()
         toggleMark(editor, format)
       }}
-      icon={ icon }
+      icon={icon}
+    />
+  )
+}
+
+const BlockButton = ({ format, icon }) => {
+  const editor = useSlate()
+  return (
+    <Button
+      active={isBlockActive(editor, format)}
+      onMouseDown={(e) => {
+        e.preventDefault()
+        toggleBlock(editor, format)
+      }}
+      icon={icon}
     />
   )
 }
@@ -143,13 +128,35 @@ const isMarkActive = (editor, format) => {
 const toggleMark = (editor, format) => {
   const isActive = isMarkActive(editor, format)
 
-  if(isActive) {
-    Editor.removeMark(editor, format) 
+  if (isActive) {
+    Editor.removeMark(editor, format)
   } else {
     Editor.addMark(editor, format, true)
   }
 
 }
 
+const isBlockActive = (editor, format) => {
+  const [match] = Editor.nodes(
+    editor,
+    {
+      match: node => {
+        return !Editor.isEditor(node) && SlateElement.isElement(node) && node.type === format
+      }
+    }
+  )
+
+  return !!match
+}
+
+const toggleBlock = (editor, format) => {
+  const isActive = isBlockActive(editor, format)
+
+  Transforms.setNodes(
+    editor,
+    { type: isActive ? 'paragraph' : format },
+    { match: node => Editor.isBlock(editor, node) }
+  )
+}
 
 export default SlateEditor;
