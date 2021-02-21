@@ -44,6 +44,8 @@ const SlateEditor = () => {
           <MarkButton format="italic" icon="format_italic" />
           <MarkButton format="underline" icon="format_underline" />
           <MarkButton format="code" icon="code" />
+          <MarkButton format="uppercase" icon="keyboard_arrow_up" />
+          <MarkButton format="lowercase" icon="keyboard_arrow_down" />
 
           <BlockButton format="heading-one" icon="looks_one" />
           <BlockButton format="heading-two" icon="looks_two" />

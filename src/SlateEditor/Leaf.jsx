@@ -1,28 +1,5 @@
 import React from 'react'
 
-// export const BoldLeaf = (props) => {
-//     return (
-//         <strong {...props.attributes} >{props.children}</strong>
-//     )
-// }
-
-// export const ItalicLeaf = (props) => {
-//     return (
-//         <em { ...props.attributes } >{ props.children }</em>
-//     )
-// }
-
-// export const UnderlineLeaf = (props) => {
-//     return (
-//         <u { ...props.attributes } >{ props.children }</u>
-//     )
-// }
-
-// export const DefaultLeaf = (props) => {
-//     return (
-//         <span {...props.attributes} >{props.children}</span>
-//     )
-// }
 
 const Leaf = ({ attributes, children, leaf }) => {
 
@@ -40,6 +17,14 @@ const Leaf = ({ attributes, children, leaf }) => {
     
     if(leaf.code) {
         children = <code style={{ width: 'fit-content', height: 'fit-content', background: '#eee' }} >{ children }</code>
+    }
+
+    if(leaf.uppercase) {
+        children = <span style={{ textTransform: 'uppercase' }} >{ children }</span>
+    }
+
+    if(leaf.lowercase) {
+        children = <span style={{ textTransform: 'lowercase' }} >{ children }</span>
     }
     
     return <span {...attributes} >{children}</span>
