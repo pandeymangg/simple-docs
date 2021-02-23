@@ -8,7 +8,20 @@ const Home = (props) => {
     }
 
     return (
-        <button onClick={ clickHandler } >NEW</button>
+        <>
+            <form>
+
+                <label>Title: </label>
+                <input type="text" placeholder="Enter title of the document" />
+                <button type="submit" onClick={
+                    (e) => {
+                        e.preventDefault()
+                        clickHandler()
+                    }
+                } >Create</button>
+
+            </form>
+        </>
     )
 }
 
