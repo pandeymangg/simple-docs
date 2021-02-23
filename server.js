@@ -8,6 +8,26 @@ mongoose.connect('mongodb://localhost/pagination', { useNewUrlParser: true, useU
 
 app.use(express.json())
 
+app.get('/api/docs/:id', getSingleDoc)
+
+async function getSingleDoc(req, res) {
+    try {
+        const doc = await DocModel.findById(req.params.id)
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                doc: doc
+            }
+        })
+    } catch (err) {
+        res.status(400).json({
+            status: 'fail',
+            message: err
+        })
+    }
+}
+
 app.post('/api/docs', createNewDocument)
 
 async function createNewDocument(req, res) {
@@ -21,7 +41,7 @@ async function createNewDocument(req, res) {
             }
         })
 
-    } catch(err) {
+    } catch (err) {
         res.status(400).json({
             status: 'fail',
             message: err

@@ -1,19 +1,36 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { createEditor, Editor, Transforms, Element as SlateElement } from 'slate'
 import { Slate, Editable, withReact, useSlate } from 'slate-react'
 import Elements from './Elements'
 import './SlateEditor.css'
 import Leaf from './Leaf'
 import Button from './Buttons/Button'
+import axios from 'axios'
 
-const SlateEditor = () => {
+const SlateEditor = (props) => {
+
+  const queryParams = new URLSearchParams(props.location.search)
+  let idCopy;
+  for (let param of queryParams.entries()) {
+    if (param[0] === 'id') {
+      idCopy = param[1]
+    }
+  }
+
+  const [docId, setDocId] = useState(idCopy)
+  
   const editor = useMemo(() => withReact(createEditor()), [])
-  const [value, setValue] = useState([
-    {
-      type: 'paragraph',
-      children: [{ text: 'A line of text in a paragraph.' }],
-    },
-  ])
+  const [value, setValue] = useState([])
+
+  useEffect(() => {
+    async function getSingleDoc() {
+      const doc = await axios.get(`/api/docs/${docId}`)
+
+      setValue(doc.data.data.doc.content)
+    }
+
+    getSingleDoc()
+  }, [])
 
   const renderElement = useCallback(props => {
 
@@ -163,5 +180,12 @@ const toggleBlock = (editor, format) => {
     { match: node => Editor.isBlock(editor, node) }
   )
 }
+
+// const initialValue = [
+//   {
+//     type: 'paragraph',
+//     children: [{ text: 'A line of text in a paragraph.' }],
+//   },
+// ]
 
 export default SlateEditor;
