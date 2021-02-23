@@ -3,20 +3,25 @@ import axios from 'axios'
 
 const Home = (props) => {
     const [title, setTitle] = useState("")
+    
 
-    const clickHandler = () => {
+    const clickHandler = async () => {
         async function createNewDoc() {
             const newDoc = await axios.post('/api/docs', {
                 name: title
             })
 
-            console.log(newDoc.data.data.doc)
+            const docId = newDoc.data.data.doc._id
+            return docId
         }
 
-        createNewDoc()
+        const docId = await createNewDoc()
+
+        const docIdString = `id=${docId}`
 
         props.history.push({
-            pathname: "/new"
+            pathname: "/new",
+            search: docIdString
         })
     }
 
