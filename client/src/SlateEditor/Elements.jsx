@@ -14,6 +14,9 @@ const Elements = ({ attributes, children, element }) => {
             
         case 'right':
             return <p style={{ textAlign: 'right' }} { ...attributes } >{ children }</p>
+            
+        case 'justify':
+            return <p style={{ textAlign: 'justify', textJustify: 'inter-word' }} { ...attributes } >{ children }</p>
 
         default:
             return <p { ...attributes } >{ children }</p>

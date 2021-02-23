@@ -69,6 +69,7 @@ const SlateEditor = (props) => {
           <BlockButton format="left" icon="format_align_left" />
           <BlockButton format="center" icon="format_align_center" />
           <BlockButton format="right" icon="format_align_right" />
+          <BlockButton format="justify" icon="format_align_justify" />
 
         </div>
 
