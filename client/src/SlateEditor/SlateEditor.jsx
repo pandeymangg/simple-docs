@@ -18,7 +18,7 @@ const SlateEditor = (props) => {
   }
 
   const [docId, setDocId] = useState(idCopy)
-  
+
   const editor = useMemo(() => withReact(createEditor()), [])
   const [value, setValue] = useState([])
 
@@ -52,6 +52,27 @@ const SlateEditor = (props) => {
 
   return (
     <div className="base-div" >
+
+      <button
+        onClick={
+          () => {
+            async function saveDoc() {
+              try {
+                const updatedDoc = await axios.patch(`/api/docs/${docId}`, {
+                  content: value
+                })
+                //console.log(updatedDoc)
+              } catch (err) {
+                console.log(err)
+              }
+            }
+
+            saveDoc()
+          }
+        }
+      >
+        Save
+      </button>
 
       <Slate editor={editor} value={value} onChange={value => setValue(value)}>
 

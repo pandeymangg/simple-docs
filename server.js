@@ -3,7 +3,7 @@ const app = express()
 const mongoose = require('mongoose')
 const DocModel = require('./docModel')
 
-mongoose.connect('mongodb://localhost/pagination', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://localhost/pagination', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
     .then(() => console.log('DB connection successful!'))
 
 app.use(express.json())
@@ -45,6 +45,28 @@ async function createNewDocument(req, res) {
         res.status(400).json({
             status: 'fail',
             message: err
+        })
+    }
+}
+
+app.patch('/api/docs/:id', updateDoc)
+
+async function updateDoc(req, res) {
+    try {
+        const updatedDoc = await DocModel.findByIdAndUpdate(req.params.id, req.body, {
+            new: true
+        })
+
+        res.status(201).json({
+            status: 'success',
+            data: {
+                doc: updatedDoc
+            }
+        })
+    } catch(err) {
+        res.status(400).json({
+            status: 'fail',
+            message: err.message
         })
     }
 }
