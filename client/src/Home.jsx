@@ -35,6 +35,15 @@ const Home = (props) => {
         getAllDocs()
     }, [])
 
+    const viewDocHandler = (id) => {
+        const idString = `id=${id}`
+
+        props.history.push({
+            pathname: '/view',
+            search: idString
+        })
+    }
+
     return (
         <>
             <form>
@@ -70,9 +79,10 @@ const Home = (props) => {
                         return (
                             <div 
                                 key={ doc._id } 
-                                style={ { width: '100%', height: 'fit-content', padding: '10px', border: '2px solid #333' } }
+                                style={ { width: '100%', height: 'fit-content', padding: '10px', border: '2px solid #333', display: 'flex', alignItems: 'center', justifyContent:'space-around' } }
                             >
                                 <p>Name: { doc.name }</p>
+                                <button onClick={ (id) => viewDocHandler(doc._id) } >View</button>
                             </div>
                         )
                     })

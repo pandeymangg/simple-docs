@@ -7,6 +7,7 @@ function App() {
     <>
       <Route path="/" exact component={Home} />
       <Route path="/new" exact component={SlateEditor} />
+      <Route path="/view" exact component={SlateEditor} />
     </>
   )
 }
