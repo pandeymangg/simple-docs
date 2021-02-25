@@ -8,6 +8,27 @@ mongoose.connect('mongodb://localhost/pagination', { useNewUrlParser: true, useU
 
 app.use(express.json())
 
+app.get('/api/docs', getAllDocs)
+
+async function getAllDocs(req, res) {
+    try {
+        const docs = await DocModel.find({})
+
+        res.status(200).json({
+            status: 'success',
+            results: docs.length,
+            data: {
+                docs
+            }
+        })
+    } catch (err) {
+        res.status(400).json({
+            status: 'fail',
+            message: err.message
+        })
+    }
+}
+
 app.get('/api/docs/:id', getSingleDoc)
 
 async function getSingleDoc(req, res) {
@@ -63,7 +84,7 @@ async function updateDoc(req, res) {
                 doc: updatedDoc
             }
         })
-    } catch(err) {
+    } catch (err) {
         res.status(400).json({
             status: 'fail',
             message: err.message
