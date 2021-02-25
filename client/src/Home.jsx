@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
 const Home = (props) => {
     const [title, setTitle] = useState("")
-    
+    const [docs, setDocs] = useState([])
 
     const clickHandler = async () => {
         async function createNewDoc() {
@@ -25,34 +25,60 @@ const Home = (props) => {
         })
     }
 
+    useEffect(() => {
+        async function getAllDocs() {
+            const docs = await axios.get('/api/docs')
+
+            setDocs(docs.data.data.docs)
+        }
+
+        getAllDocs()
+    }, [])
+
     return (
         <>
             <form>
 
                 <label>Title: </label>
-                
-                <input 
-                    type="text" 
-                    placeholder="Enter title of the document" 
+
+                <input
+                    type="text"
+                    placeholder="Enter title of the document"
                     required
-                    onChange={ (e) => {
+                    onChange={(e) => {
                         setTitle(e.target.value)
-                    } }
+                    }}
                 />
 
-                <button 
-                    type="submit" 
+                <button
+                    type="submit"
                     onClick={
-                    (e) => {
-                        e.preventDefault()
-                        clickHandler()
+                        (e) => {
+                            e.preventDefault()
+                            clickHandler()
+                        }
                     }
-                }
-                disabled={ !title } >
+                    disabled={!title} >
                     Create
                 </button>
 
             </form>
+
+            <div>
+                {
+                    docs.map(doc => {
+                        return (
+                            <div 
+                                key={ doc._id } 
+                                style={ { width: '100%', height: 'fit-content', padding: '10px', border: '2px solid #333' } }
+                            >
+                                <p>Name: { doc.name }</p>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+
         </>
     )
 }
