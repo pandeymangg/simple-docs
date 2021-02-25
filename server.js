@@ -92,6 +92,24 @@ async function updateDoc(req, res) {
     }
 }
 
+app.delete('/api/docs/:id', deleteDoc)
+
+async function deleteDoc(req, res) {
+    try {
+        await DocModel.findByIdAndDelete(req.params.id)
+
+        res.status(200).json({
+            status: 'success',
+            message: 'document deleted'
+        })
+    } catch (err) {
+        res.status(400).json({
+            status: 'fail',
+            message: err.message
+        })
+    }
+}
+
 app.listen(8000, () => {
     console.log("server started at port: 8000")
 })
