@@ -18,6 +18,7 @@ const SlateEditor = (props) => {
   }
 
   const [docId, setDocId] = useState(idCopy)
+  const [title, setTitle] = useState("")
 
   const editor = useMemo(() => withReact(createEditor()), [])
   const [value, setValue] = useState([])
@@ -27,6 +28,7 @@ const SlateEditor = (props) => {
       const doc = await axios.get(`/api/docs/${docId}`)
 
       setValue(doc.data.data.doc.content)
+      setTitle(doc.data.data.doc.name)
     }
 
     getSingleDoc()
@@ -50,33 +52,38 @@ const SlateEditor = (props) => {
 
   }, [])
 
+  const saveDocHandler = () => {
+    async function saveDoc() {
+      try {
+        const updatedDoc = await axios.patch(`/api/docs/${docId}`, {
+          content: value
+        })
+        //console.log(updatedDoc)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+    saveDoc()
+  }
+
   return (
     <div className="base-div" >
 
-      <button
-        onClick={
-          () => {
-            async function saveDoc() {
-              try {
-                const updatedDoc = await axios.patch(`/api/docs/${docId}`, {
-                  content: value
-                })
-                //console.log(updatedDoc)
-              } catch (err) {
-                console.log(err)
-              }
-            }
+      <div className="doc-info" >
+        <h3 className="doc-title" >Document Title: {title}</h3>
 
-            saveDoc()
-          }
-        }
-      >
-        Save
-      </button>
+        <button onClick={saveDocHandler} className="save-button">
+          <span className="material-icons" >
+            save
+          </span>
+        </button>
 
+      </div>
+      
       <Slate editor={editor} value={value} onChange={value => setValue(value)}>
 
-        <div>
+        <div className="toolbar" >
 
           <MarkButton format="bold" icon="format_bold" />
           <MarkButton format="italic" icon="format_italic" />
