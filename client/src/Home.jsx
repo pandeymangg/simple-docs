@@ -44,6 +44,14 @@ const Home = (props) => {
         })
     }
 
+    const deleteDocHandler = async (id) => {
+        await axios.delete(`/api/docs/${id}`)
+
+        props.history.push({
+            pathname: '/delete'
+        })
+    }
+
     return (
         <>
             <form>
@@ -83,6 +91,7 @@ const Home = (props) => {
                             >
                                 <p>Name: { doc.name }</p>
                                 <button onClick={ (id) => viewDocHandler(doc._id) } >View</button>
+                                <button onClick={ (id) => deleteDocHandler(doc._id) } >Delete</button>
                             </div>
                         )
                     })

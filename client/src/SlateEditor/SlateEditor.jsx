@@ -30,7 +30,7 @@ const SlateEditor = (props) => {
     }
 
     getSingleDoc()
-  }, [])
+  }, [docId])
 
   const renderElement = useCallback(props => {
 
