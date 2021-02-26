@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import './Home.css'
 
 const Home = (props) => {
     const [title, setTitle] = useState("")
@@ -54,48 +55,92 @@ const Home = (props) => {
 
     return (
         <>
-            <form>
+            <h1 className="heading-primary" >
+                <span style={{ color: '#623C3D' }} >simple</span><span style={{ color: '#6B645C' }} >Docs</span>
+            </h1>
 
-                <label>Title: </label>
+            <div className="new-doc-card" >
 
-                <input
-                    type="text"
-                    placeholder="Enter title of the document"
-                    required
-                    onChange={(e) => {
-                        setTitle(e.target.value)
-                    }}
-                />
+                <div className="add-new-doc" >
+                    <span className="add-btn" disabled >
+                        <span className="material-icons" >
+                            add
+                    </span>
+                    </span>
 
-                <button
-                    type="submit"
-                    onClick={
-                        (e) => {
-                            e.preventDefault()
-                            clickHandler()
+                    <h3 className="heading-secondary" >Add new document</h3>
+                </div>
+
+                <form className="add-new-doc-form" >
+
+                    <label className="doc-title" >Title </label>
+
+                    <input
+                        type="text"
+                        placeholder="Enter title of the document"
+                        onChange={(e) => {
+                            setTitle(e.target.value)
+                        }}
+                        className="doc-title-input"
+                    />
+
+                    <button
+                        type="submit"
+                        onClick={
+                            (e) => {
+                                e.preventDefault()
+                                clickHandler()
+                            }
                         }
-                    }
-                    disabled={!title} >
-                    Create
-                </button>
+                        disabled={!title}
+                        className="add-new-doc-btn"
+                    >
+                        Add
+                    </button>
 
-            </form>
+                </form>
+            </div>
 
-            <div>
+            <div className="docs-card" >
+                <div className="saved-docs-div" >
+                    <span className="material-icons  saved-icon" >
+                        save
+                    </span>
+                    <h3 className="heading-secondary" >Saved Documents</h3>
+                </div>
+
                 {
                     docs.map(doc => {
                         return (
-                            <div 
-                                key={ doc._id } 
-                                style={ { width: '90%', height: 'fit-content', padding: '10px', border: '2px solid #333', display: 'flex', alignItems: 'center', justifyContent:'space-around' } }
-                            >
-                                <p>Name: { doc.name }</p>
-                                <button onClick={ (id) => viewDocHandler(doc._id) } >View</button>
-                                <button onClick={ (id) => deleteDocHandler(doc._id) } >Delete</button>
+
+                            <div className="single-doc" key={ doc._id } >
+                                <h3 
+                                    className="heading-secondary doc-name"
+                                    onClick={ id => viewDocHandler(doc._id) }
+                                > 
+                                    { doc.name } 
+                                </h3>
+
+                                <span 
+                                    className="material-icons delete-doc-icon" 
+                                    onClick={(id) => deleteDocHandler(doc._id)}
+                                >delete</span>
+                                
                             </div>
+
+                            // <div
+                            //     key={doc._id}
+                            //     className="single-doc"
+                            // >
+                            //     <p>Name: {doc.name}</p>
+                            //     <button onClick={(id) => viewDocHandler(doc._id)} >View</button>
+                            //     <button onClick={(id) => deleteDocHandler(doc._id)} >Delete</button>
+                            // </div>
+
                         )
                     })
                 }
+
             </div>
 
         </>

@@ -1,0 +1,132 @@
+*{
+    box-sizing: border-box;
+}
+
+.heading-primary {
+    font-family: 'Cutive', serif;
+    text-align: center;
+}
+
+.new-doc-card {
+    width: 80%;
+    height: 230px;
+    background: #fff;
+    margin: auto;
+    border-radius: 20px;
+    border: 3px solid #000;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.add-btn {
+    color: #D9262F;
+    margin-left: 10px;
+    margin-right: 10px;
+    transform: scale(1.2);
+}
+
+.add-new-doc {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.heading-secondary {
+    font-family: 'Cutive', serif;
+}
+
+.add-new-doc-form {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+.doc-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-family: 'Cutive', serif;
+}
+
+.doc-title-input {
+    width: 30%;
+    height: 30px;
+    border-radius: 3px;
+    outline: none;
+    border: 1px solid #848484;
+    font-family: 'Cutive', serif;
+    margin-bottom: 10px;
+}
+
+.doc-title-input:focus {
+    border-color: #333;
+    border-width: 2px;
+}
+
+.add-new-doc-btn {
+    width: 150px;
+    height: 40px;
+    color: #fff;
+    background-color: #6B645C;
+    font-family: 'Cutive', serif;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid #333;
+    border-radius: 3px;
+}
+
+.add-new-doc-btn:hover {
+    border-width: 2px;
+    border-color: #000;
+}
+
+.add-new-doc-btn:disabled {
+    opacity: 0.5;
+    cursor: default;
+    pointer-events: none;
+}
+
+.docs-card {
+    margin: auto;
+    width: 80%;
+    background: #fff;
+    border-radius: 20px;
+    border: 3px solid #000;
+    padding: 10px;
+    height: fit-content;
+}
+
+.saved-icon {
+    margin-left: 10px;
+    margin-right: 10px;
+    color: olive;
+}
+
+.saved-docs-div {
+    display: flex;
+    align-items: center;
+}
+
+.single-doc {
+    width: 60%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.delete-doc-icon {
+    cursor: pointer;
+}
+
+.delete-doc-icon:hover {
+    color: #D9262F;
+}
+
+.doc-name {
+    cursor: pointer;
+}
+
+.doc-name:hover {
+    color: #6B645C;
+}
+
