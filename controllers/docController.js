@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const DocModel = require('../models/docModel')
 
 exports.getAllDocs = async function (req, res) {
