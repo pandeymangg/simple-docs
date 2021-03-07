@@ -23,6 +23,10 @@ exports.getAllDocs = async function (req, res) {
 
 exports.createNewDocument = async function (req, res) {
     try {
+
+        // const nameCheck = await DocModel.findOne({ name: req.body.name })
+        // console.log(nameCheck)
+
         const newDoc = await DocModel.create(
             {
                 name: req.body.name,

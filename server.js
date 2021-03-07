@@ -10,7 +10,7 @@ const { getAllDocs, createNewDocument, getSingleDoc, updateDoc, deleteDoc } = re
 const { signup, login, protect, isOwner } = require('./controllers/authController')
 
 
-mongoose.connect('mongodb://localhost/pagination', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
+mongoose.connect('mongodb://localhost/test-db', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
     .then(() => console.log('DB connection successful!'))
 
 app.use(express.json())
