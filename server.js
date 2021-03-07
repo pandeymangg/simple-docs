@@ -15,15 +15,15 @@ mongoose.connect('mongodb://localhost/pagination', { useNewUrlParser: true, useU
 
 app.use(express.json())
 
-app.get('/api/docs', getAllDocs)
+app.get('/api/docs', protect, getAllDocs)
 
 app.get('/api/docs/:id', protect, getSingleDoc)
 
-app.post('/api/docs', createNewDocument)
+app.post('/api/docs', protect, createNewDocument)
 
-app.patch('/api/docs/:id', updateDoc)
+app.patch('/api/docs/:id', protect, updateDoc)
 
-app.delete('/api/docs/:id', deleteDoc)
+app.delete('/api/docs/:id', protect, deleteDoc)
 
 app.post('/api/users/signup', signup)
 
