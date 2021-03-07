@@ -30,12 +30,12 @@ const userSchema = new mongoose.Schema({
     }
 })
 
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
 
     //  ONLY DOING THIS WHEN THE PASSWORD FIELD IS MODIFIED (NEW OR EDITED)
 
-    if(!this.isModified('password')) {
-        return 
+    if (!this.isModified('password')) {
+        return
     }
 
     this.password = await bcrypt.hash(this.password, 12)
@@ -46,6 +46,20 @@ userSchema.pre('save', async function(next) {
 
 userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
     return await bcrypt.compare(candidatePassword, userPassword)
+}
+
+userSchema.methods.isPasswordChanged = function (timeStamp) {
+    if (!this.passwordChangedAt) {
+        return
+    }
+    const changedTimeStamp = parseInt(this.passwordChangedAt.getTime() / 1000);
+
+    if (this.passwordChangedAt) {
+        //console.log(changedTimeStamp, timeStamp)
+        return timeStamp < changedTimeStamp
+    }
+
+    return false;
 }
 
 const UserModel = mongoose.model('UserModel', userSchema)
