@@ -5,6 +5,10 @@ const docSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    owner: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'UserModel'
+    },
     content: {
         type: Array,
         default: [

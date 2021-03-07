@@ -1,4 +1,5 @@
 const UserModel = require('../models/userModel')
+const DocModel = require('../models/docModel')
 const jwt = require('jsonwebtoken')
 const { promisify } = require('util')
 
@@ -145,6 +146,28 @@ exports.protect = async function (req, res, next) {
             status: 'fail',
             err,
             messgae: err.message
+        })
+    }
+}
+
+exports.isOwner = async function (req, res, next) {
+    try {
+        const doc = await DocModel.findById(req.params.id)
+
+        if (!req.user._id.equals(doc.owner)) {
+            res.status(400).json({
+                status: "fail",
+                message: "You are not authorised to access this document!"
+            })
+
+            return
+        }
+
+        next()
+    } catch (err) {
+        res.status(400).json({
+            status: "fail",
+            message: err.message
         })
     }
 }

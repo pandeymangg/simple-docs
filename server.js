@@ -7,7 +7,7 @@ dotenv.config({ path: "./config.env" })
 
 const { getAllDocs, createNewDocument, getSingleDoc, updateDoc, deleteDoc } = require('./controllers/docController')
 
-const { signup, login, protect } = require('./controllers/authController')
+const { signup, login, protect, isOwner } = require('./controllers/authController')
 
 
 mongoose.connect('mongodb://localhost/pagination', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
@@ -17,13 +17,13 @@ app.use(express.json())
 
 app.get('/api/docs', protect, getAllDocs)
 
-app.get('/api/docs/:id', protect, getSingleDoc)
+app.get('/api/docs/:id', protect, isOwner, getSingleDoc)
 
 app.post('/api/docs', protect, createNewDocument)
 
-app.patch('/api/docs/:id', protect, updateDoc)
+app.patch('/api/docs/:id', protect, isOwner, updateDoc)
 
-app.delete('/api/docs/:id', protect, deleteDoc)
+app.delete('/api/docs/:id', protect, isOwner, deleteDoc)
 
 app.post('/api/users/signup', signup)
 

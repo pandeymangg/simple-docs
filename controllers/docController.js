@@ -21,7 +21,12 @@ exports.getAllDocs = async function (req, res) {
 
 exports.createNewDocument = async function (req, res) {
     try {
-        const newDoc = await DocModel.create(req.body)
+        const newDoc = await DocModel.create(
+            {
+                name: req.body.name,
+                owner: req.user._id
+            }
+        )
 
         res.status(200).json({
             status: 'success',
