@@ -2,7 +2,9 @@ const DocModel = require('../models/docModel')
 
 exports.getAllDocs = async function (req, res) {
     try {
-        const docs = await DocModel.find({})
+        const docs = await DocModel.find({
+            owner: req.user._id
+        })
 
         res.status(200).json({
             status: 'success',
