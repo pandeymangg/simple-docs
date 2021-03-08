@@ -5,7 +5,7 @@ const dotenv = require('dotenv')
 
 dotenv.config({ path: "./config.env" })
 
-const { getAllDocs, createNewDocument, getSingleDoc, updateDoc, deleteDoc } = require('./controllers/docController')
+const { getAllDocs, createNewDocument, getSingleDoc, updateDoc, deleteDoc, doesDocExist } = require('./controllers/docController')
 
 const { signup, login, protect, isOwner } = require('./controllers/authController')
 
@@ -19,7 +19,7 @@ app.get('/api/docs', protect, getAllDocs)
 
 app.get('/api/docs/:id', protect, isOwner, getSingleDoc)
 
-app.post('/api/docs', protect, createNewDocument)
+app.post('/api/docs', protect, doesDocExist, createNewDocument)
 
 app.patch('/api/docs/:id', protect, isOwner, updateDoc)
 

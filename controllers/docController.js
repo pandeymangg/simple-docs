@@ -21,11 +21,49 @@ exports.getAllDocs = async function (req, res) {
     }
 }
 
+exports.doesDocExist = async function (req, res, next) {
+    try {
+        const nameCheck = await DocModel.findOne(
+            {
+                name: req.body.name,
+                owner: req.user._id
+            }
+        )
+
+        if (nameCheck) {
+            res.status(400).json({
+                status: "fail",
+                message: "document of same name already exists!"
+            })
+            return
+        }
+
+        next()
+    } catch (err) {
+        res.status(400).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+}
+
 exports.createNewDocument = async function (req, res) {
     try {
 
-        // const nameCheck = await DocModel.findOne({ name: req.body.name })
-        // console.log(nameCheck)
+        // const nameCheck = await DocModel.findOne(
+        //     {
+        //         name: req.body.name,
+        //         owner: req.user._id
+        //     }
+        // )
+
+        // if (nameCheck) {
+        //     res.status(400).json({
+        //         status: "fail",
+        //         message: "document of same name already exists!"
+        //     })
+        //     return
+        // }
 
         const newDoc = await DocModel.create(
             {
