@@ -187,7 +187,11 @@ exports.isLoggedIn = async function (req, res) {
                 return
             }
 
-            res.json(true)
+            res.status(200).json({
+                status: "success",
+                loggedIn: true,
+                user: currentUser
+            })
 
         } else {
             res.json(false)

@@ -10,7 +10,7 @@ const Home = (props) => {
         async function createNewDoc() {
             const newDoc = await axios.post('/api/docs', {
                 name: title
-            })
+            }, { withCredentials: true })
 
             const docId = newDoc.data.data.doc._id
             return docId
