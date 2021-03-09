@@ -65,6 +65,11 @@ exports.login = async function (req, res) {
 
         const token = signToken(user._id)
 
+        res.cookie('jwt', token, {
+            expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
+            httpOnly: true
+        })
+
         // 4.) IF EVERYTHING IS OKAY, SEND THE TOKEN TO THE CLIENT:
 
         res.status(200).json({
@@ -89,8 +94,12 @@ exports.protect = async function (req, res, next) {
         let token;
 
         const authHeader = req.headers.authorization;
+        const authCookie = req.cookies.jwt
+
         if (authHeader && authHeader.startsWith('Bearer')) {
             token = authHeader.split(' ')[1];
+        } else if (authCookie) {
+            token = authCookie
         }
 
         //console.log(token)
@@ -147,6 +156,46 @@ exports.protect = async function (req, res, next) {
             err,
             messgae: err.message
         })
+    }
+}
+
+
+exports.isLoggedIn = async function (req, res) {
+    try {
+        //  TESTING USING BACKEND: 
+
+        // const token = req.headers.cookie.split('=')[1]
+
+        //  TESTING USING FRONTEND:
+
+        const token = req.cookies.jwt
+
+        if (token) {
+            const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
+
+            const currentUser = await UserModel.findById(decoded.id)
+
+            if (!currentUser) {
+                res.json(false)
+                return
+            }
+
+            const isPasswordChanged = currentUser.isPasswordChanged(decoded.iat)
+
+            if (isPasswordChanged) {
+                res.json(false)
+                return
+            }
+
+            res.json(true)
+
+        } else {
+            res.json(false)
+        }
+
+
+    } catch (err) {
+        res.json(false)
     }
 }
 
