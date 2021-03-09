@@ -5,8 +5,8 @@ import AuthContext from '../context/AuthContext'
 const Navbar = () => {
     const { loggedIn, currentUser } = useContext(AuthContext)
 
-    let username = null
-
+    let isLoggedIn = loggedIn
+    let username
     if (currentUser) {
         username = <li>{currentUser.username}</li>
     }
@@ -19,9 +19,9 @@ const Navbar = () => {
                     <li> <Link to="/login" >Log In</Link> </li>
                     <li> <Link to="/signup" >Sign Up</Link> </li>
                     {
-                        username ? 
-                        <Link to="/dashboard" >{ currentUser.username }</Link>
-                        : null
+                        isLoggedIn ? 
+                        <Link to="/dashboard" >{ username }</Link>
+                        : <li>Not Logged In</li>
                     }
                 </ul>
             </nav>

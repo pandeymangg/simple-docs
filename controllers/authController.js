@@ -176,14 +176,20 @@ exports.isLoggedIn = async function (req, res) {
             const currentUser = await UserModel.findById(decoded.id)
 
             if (!currentUser) {
-                res.json(false)
+                res.json({
+                    status: "fail",
+                    loggedIn: false
+                })
                 return
             }
 
             const isPasswordChanged = currentUser.isPasswordChanged(decoded.iat)
 
             if (isPasswordChanged) {
-                res.json(false)
+                res.json({
+                    status: "fail",
+                    loggedIn: false
+                })
                 return
             }
 
@@ -194,7 +200,10 @@ exports.isLoggedIn = async function (req, res) {
             })
 
         } else {
-            res.json(false)
+            res.json({
+                status: "fail",
+                loggedIn: false
+            })
         }
 
 
