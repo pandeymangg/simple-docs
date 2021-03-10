@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { createEditor, Editor, Transforms, Element as SlateElement } from 'slate'
 import { Slate, Editable, withReact, useSlate } from 'slate-react'
 import Elements from './Elements'
@@ -6,6 +6,8 @@ import './SlateEditor.css'
 import Leaf from './Leaf'
 import Button from './Buttons/Button'
 import axios from 'axios'
+import AuthContext from '../context/AuthContext'
+import { Redirect } from 'react-router'
 
 const SlateEditor = (props) => {
 
@@ -22,6 +24,8 @@ const SlateEditor = (props) => {
 
   const editor = useMemo(() => withReact(createEditor()), [])
   const [value, setValue] = useState([])
+  
+  const { loggedIn } = useContext(AuthContext)
 
   useEffect(() => {
     async function getSingleDoc() {
@@ -69,6 +73,10 @@ const SlateEditor = (props) => {
 
   return (
     <div className="base-div" >
+
+      {
+        loggedIn ? null : <Redirect to="/login" />
+      }
 
       <div className="doc-info" >
         <h3 className="doc-title" >Document Title: {title}</h3>

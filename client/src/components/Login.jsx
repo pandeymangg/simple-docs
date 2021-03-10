@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import axios from 'axios'
+import AuthContext from '../context/AuthContext'
+import { Redirect } from 'react-router'
 
 const Signup = () => {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+
+    const { loggedIn } = useContext(AuthContext)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -22,6 +26,11 @@ const Signup = () => {
 
     return (
         <div>
+
+            {
+                loggedIn ? <Redirect to="/dashboard" /> : null  
+            }
+
             <form onSubmit={ (e) => handleSubmit(e) } >
 
                 <input type="email" placeholder="enter email"

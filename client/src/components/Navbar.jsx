@@ -16,12 +16,16 @@ const Navbar = () => {
             <nav>
                 <ul>
                     <li> <Link to="/">Home</Link> </li>
-                    <li> <Link to="/login" >Log In</Link> </li>
-                    <li> <Link to="/signup" >Sign Up</Link> </li>
+
+                    {
+                        isLoggedIn === true ? <li> <Link to="/login" >Log Out</Link> </li>
+                        : <li> <Link to="/login" >Log In</Link> </li>
+                    }
+                    
                     {
                         isLoggedIn ? 
                         <Link to="/dashboard" >{ username }</Link>
-                        : <li>Not Logged In</li>
+                        : null
                     }
                 </ul>
             </nav>

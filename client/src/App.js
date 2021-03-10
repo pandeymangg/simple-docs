@@ -16,10 +16,26 @@ function App() {
     <>
 
       <Route path="/" component={HomePage} />
-      <Route path="/signup" component={Signup} />
-      <Route path="/login" component={Login} />
-      <Route path="/new" component={SlateEditor} />
-      <Route path="/view" exact component={SlateEditor} />
+      
+      {
+        ( loggedIn === true || loggedIn === false ) && <Route path="/login" component={Login} />
+      }
+
+
+      {
+        (loggedIn === true || loggedIn === false) && (
+          <Route path="/new" exact component={SlateEditor} />
+        )
+      }
+
+      {
+        (loggedIn === true || loggedIn === false) && (
+          <Route path="/view" exact component={SlateEditor} />
+        )
+      }
+
+      {/* <Route path="/new" component={SlateEditor} />
+      <Route path="/view" exact component={SlateEditor} /> */}
 
       {
         (loggedIn === true || loggedIn === false) && (
