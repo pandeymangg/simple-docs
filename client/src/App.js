@@ -1,6 +1,5 @@
 import { Route } from 'react-router-dom'
 import HomePage from './components/HomePage'
-import Signup from './components/Signup'
 import Login from './components/Login'
 import Home from './Home'
 import ProtectedRoute from './components/ProtectedRoute'

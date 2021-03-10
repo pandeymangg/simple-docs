@@ -8,7 +8,7 @@ dotenv.config({ path: "./config.env" })
 
 const { getAllDocs, createNewDocument, getSingleDoc, updateDoc, deleteDoc, doesDocExist } = require('./controllers/docController')
 
-const { signup, login, protect, isOwner, isLoggedIn } = require('./controllers/authController')
+const { signup, login, protect, isOwner, isLoggedIn, logout } = require('./controllers/authController')
 
 
 mongoose.connect('mongodb://localhost/test-db', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
@@ -34,6 +34,7 @@ app.post('/api/users/login', login)
 
 app.get('/api/users/isLoggedIn', isLoggedIn)
 
+app.get('/api/users/logout', logout)
 
 const port = process.env.PORT
 app.listen(port, () => {

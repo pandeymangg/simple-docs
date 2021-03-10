@@ -1,12 +1,13 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import AuthContext from '../context/AuthContext'
+import LogoutButton from './LogoutButton'
 
 const Navbar = () => {
     const { loggedIn, currentUser } = useContext(AuthContext)
 
-    let isLoggedIn = loggedIn
     let username
+    
     if (currentUser) {
         username = <li>{currentUser.username}</li>
     }
@@ -18,15 +19,20 @@ const Navbar = () => {
                     <li> <Link to="/">Home</Link> </li>
 
                     {
-                        isLoggedIn === true ? <li> <Link to="/login" >Log Out</Link> </li>
+                        loggedIn === true ? null
                         : <li> <Link to="/login" >Log In</Link> </li>
                     }
                     
                     {
-                        isLoggedIn ? 
+                        loggedIn ? 
                         <Link to="/dashboard" >{ username }</Link>
                         : null
                     }
+
+                    {
+                        loggedIn === true ? <LogoutButton /> : null
+                    }
+
                 </ul>
             </nav>
         </header>

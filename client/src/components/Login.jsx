@@ -1,14 +1,16 @@
 import React, { useContext, useState } from 'react'
 import axios from 'axios'
 import AuthContext from '../context/AuthContext'
-import { Redirect } from 'react-router'
+import { Redirect, useHistory } from 'react-router'
 
 const Signup = () => {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const { loggedIn } = useContext(AuthContext)
+    const { loggedIn, getLoggedInState } = useContext(AuthContext)
+
+    const history = useHistory()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -18,9 +20,10 @@ const Signup = () => {
             password,
         }
 
-        const response = await axios.post("/api/users/login", loginData)
+        await axios.post("/api/users/login", loginData)
 
-        console.log(response.data)
+        getLoggedInState()
+        history.push("/")
 
     }
 

@@ -86,6 +86,25 @@ exports.login = async function (req, res) {
     }
 }
 
+exports.logout = async function (req, res) {
+    try {
+        res.cookie('jwt', '', {
+            expires: new Date(Date.now() + 2 * 1000),
+            httpOnly: true
+        })
+
+        res.status(200).json({
+            status: "success"
+        })
+
+    } catch (err) {
+        res.status(400).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+}
+
 exports.protect = async function (req, res, next) {
     try {
         //  1.)  GETTING THE TOKEN AND CHECKING IF IT IS THERE
@@ -112,7 +131,6 @@ exports.protect = async function (req, res, next) {
 
             return;
         }
-
 
         //   2.)  VALIDATE THE TOKEN
 
