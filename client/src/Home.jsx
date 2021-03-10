@@ -113,19 +113,19 @@ const Home = (props) => {
                     docs.map(doc => {
                         return (
 
-                            <div className="single-doc" key={ doc._id } >
-                                <h3 
+                            <div className="single-doc" key={doc._id} >
+                                <h3
                                     className="heading-secondary doc-name"
-                                    onClick={ id => viewDocHandler(doc._id) }
-                                > 
-                                    { doc.name } 
+                                    onClick={id => viewDocHandler(doc._id)}
+                                >
+                                    {doc.name}
                                 </h3>
 
-                                <span 
-                                    className="material-icons delete-doc-icon" 
+                                <span
+                                    className="material-icons delete-doc-icon"
                                     onClick={(id) => deleteDocHandler(doc._id)}
                                 >delete</span>
-                                
+
                             </div>
 
                             // <div

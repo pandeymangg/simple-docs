@@ -16,7 +16,7 @@ const Signup = () => {
 
         const response = await axios.post("/api/users/login", loginData)
 
-        console.log(response)
+        console.log(response.data)
 
     }
 
