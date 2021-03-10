@@ -20,7 +20,12 @@ function App() {
       <Route path="/login" component={Login} />
       <Route path="/new" component={SlateEditor} />
       <Route path="/view" exact component={SlateEditor} />
-      <ProtectedRoute path="/dashboard" exact component={Home} />
+
+      {
+        (loggedIn === true || loggedIn === false) && (
+          <ProtectedRoute path="/dashboard" exact component={Home} />
+        )
+      }
 
 
     </>
