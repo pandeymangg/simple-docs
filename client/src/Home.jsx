@@ -5,25 +5,41 @@ import './Home.css'
 const Home = (props) => {
     const [title, setTitle] = useState("")
     const [docs, setDocs] = useState([])
+    const [errorMessage, setErrorMessage] = useState("")
 
     const clickHandler = async () => {
         async function createNewDoc() {
-            const newDoc = await axios.post('/api/docs', {
-                name: title
-            }, { withCredentials: true })
+            // const newDoc = await axios.post('/api/docs', {
+            //     name: title
+            // }, { withCredentials: true })
 
-            const docId = newDoc.data.data.doc._id
-            return docId
+            // const docId = newDoc.data.data.doc._id
+            // return docId
+            try {
+                const newDoc = await axios.post('/api/docs', {
+                    name: title
+                }, { withCredentials: true })
+
+                const docId = newDoc.data.data.doc._id
+                return docId
+            } catch (err) {
+                console.log(err.response)
+                setErrorMessage(err.response.data.message)
+            }
         }
+
 
         const docId = await createNewDoc()
 
-        const docIdString = `id=${docId}`
+        if (docId) {
+            const docIdString = `id=${docId}`
 
-        props.history.push({
-            pathname: "/new",
-            search: docIdString
-        })
+            props.history.push({
+                pathname: "/new",
+                search: docIdString,
+                //state: { docId }
+            })
+        }
     }
 
     useEffect(() => {
@@ -41,7 +57,8 @@ const Home = (props) => {
 
         props.history.push({
             pathname: '/view',
-            search: idString
+            search: idString,
+            //state: { docId: id }
         })
     }
 
@@ -73,7 +90,14 @@ const Home = (props) => {
 
                 <form className="add-new-doc-form" >
 
-                    <label className="doc-title" >Title </label>
+                    <div style={{ display: "flex" }} >
+                        <label className="doc-title" >Title </label>
+
+                        {
+                            errorMessage !== "" && <div className="error-box-home" > <p className="error-text-home" > { errorMessage } </p> </div>
+                        }
+
+                    </div>
 
                     <input
                         type="text"

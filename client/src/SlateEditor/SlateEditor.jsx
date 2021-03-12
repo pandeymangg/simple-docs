@@ -19,23 +19,58 @@ const SlateEditor = (props) => {
     }
   }
 
+  //const [docId, setDocId] = useState(props.location.state.docId)
   const [docId, setDocId] = useState(idCopy)
   const [title, setTitle] = useState("")
+  const [idStatus, setIdStatus] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
+  const [errorStatus, setErrorStatus] = useState("")
 
   const editor = useMemo(() => withReact(createEditor()), [])
   const [value, setValue] = useState([])
-  
+
   const { loggedIn } = useContext(AuthContext)
 
   useEffect(() => {
-    async function getSingleDoc() {
-      const doc = await axios.get(`/api/docs/${docId}`)
+    //const docId = props.location.state.docId
 
-      setValue(doc.data.data.doc.content)
-      setTitle(doc.data.data.doc.name)
+    if (loggedIn) {
+      if (!idCopy) {
+        setIdStatus("false")
+      } else {
+        async function getSingleDoc() {
+          try {
+            const doc = await axios.get(`/api/docs/${docId}`)
+
+            setValue(doc.data.data.doc.content)
+            setTitle(doc.data.data.doc.name)
+          } catch (err) {
+            console.log(err.response.data)
+            setErrorStatus(err.response.status)
+            setErrorMessage(err.response.data.message)
+          }
+        }
+
+        getSingleDoc()
+      }
+
+      // async function getSingleDoc() {
+      //   try {
+      //     const doc = await axios.get(`/api/docs/${docId}`)
+
+      //     setValue(doc.data.data.doc.content)
+      //     setTitle(doc.data.data.doc.name)
+      //   } catch (err) {
+      //     console.log(err.response.data)
+      //     setErrorStatus(err.response.status)
+      //     setErrorMessage(err.response.data.message)
+      //   }
+      // }
+
+      // getSingleDoc()
     }
 
-    getSingleDoc()
+
   }, [docId])
 
   const renderElement = useCallback(props => {
@@ -59,12 +94,15 @@ const SlateEditor = (props) => {
   const saveDocHandler = () => {
     async function saveDoc() {
       try {
-        const updatedDoc = await axios.patch(`/api/docs/${docId}`, {
+        //const docId = props.location.state.docId
+        await axios.patch(`/api/docs/${docId}`, {
           content: value
         })
         //console.log(updatedDoc)
       } catch (err) {
-        console.log(err)
+        console.log(err.response.data)
+        setErrorStatus(err.response.status)
+        setErrorMessage(err.response.data.message)
       }
     }
 
@@ -72,7 +110,17 @@ const SlateEditor = (props) => {
   }
 
   return (
+
     <div className="base-div" >
+
+      {
+        loggedIn && errorMessage !== "" ? <Redirect to={{ pathname: 'error', state: { message: errorMessage, statusCode: errorStatus } }} />
+          : null
+      }
+
+      {
+        loggedIn && idStatus === "false" ? <Redirect to="/" /> : null
+      }
 
       {
         loggedIn ? null : <Redirect to="/login" />
@@ -88,7 +136,7 @@ const SlateEditor = (props) => {
         </button>
 
       </div>
-      
+
       <Slate editor={editor} value={value} onChange={value => setValue(value)}>
 
         <div className="toolbar" >

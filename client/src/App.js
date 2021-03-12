@@ -24,18 +24,15 @@ function App() {
 
       {
         (loggedIn === true || loggedIn === false) && (
-          <Route path="/new" exact component={SlateEditor} />
+          <Route path="/view" exact component={SlateEditor} />
         )
       }
 
       {
         (loggedIn === true || loggedIn === false) && (
-          <Route path="/view" exact component={SlateEditor} />
+          <Route path="/new" exact component={SlateEditor} />
         )
       }
-
-      {/* <Route path="/new" component={SlateEditor} />
-      <Route path="/view" exact component={SlateEditor} /> */}
 
       {
         (loggedIn === true || loggedIn === false) && (

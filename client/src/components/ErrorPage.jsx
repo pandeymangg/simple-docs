@@ -2,12 +2,19 @@ import { useState } from "react"
 
 const ErrorPage = (props) => {
 
-    const [state] = useState(props.location.state)
+    const [state] = useState(props.location.state || "false")
 
     return (
         <div>
-            <h1>Error!</h1>
-            <p>{ state.message }</p>
+
+            {
+                state !== "false" && state.statusCode ? <h1>{state.statusCode} Error!</h1> : <h1>Error!</h1>
+            }
+
+            {
+                state !== "false" && state.message ? <p>{state.message}</p> : null
+            }
+
         </div>
     )
 }

@@ -7,7 +7,7 @@ const Navbar = () => {
     const { loggedIn, currentUser } = useContext(AuthContext)
 
     let username
-    
+
     if (currentUser) {
         username = <li>{currentUser.username}</li>
     }
@@ -20,13 +20,13 @@ const Navbar = () => {
 
                     {
                         loggedIn === true ? null
-                        : <li> <Link to="/login" >Log In</Link> </li>
+                            : <li> <Link to="/login" >Log In</Link> </li>
                     }
-                    
+
                     {
-                        loggedIn ? 
-                        <Link to="/dashboard" >{ username }</Link>
-                        : null
+                        loggedIn ?
+                            <Link to="/dashboard" >{username}</Link>
+                            : null
                     }
 
                     {
@@ -36,6 +36,7 @@ const Navbar = () => {
                 </ul>
             </nav>
         </header>
+
     )
 }
 
