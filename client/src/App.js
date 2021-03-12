@@ -6,6 +6,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import SlateEditor from './SlateEditor/SlateEditor'
 import { useContext } from 'react'
 import AuthContext from './context/AuthContext'
+import ErrorPage from './components/ErrorPage'
 
 function App() {
 
@@ -41,6 +42,8 @@ function App() {
           <ProtectedRoute path="/dashboard" exact component={Home} />
         )
       }
+
+      <Route path="/error" exact render={ (props) => <ErrorPage {...props} /> } />
 
 
     </>
