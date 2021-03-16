@@ -418,8 +418,9 @@ exports.createAccessNotification = async function (req, res) {
 
         const newNotification = await NotificationModel.create({
             type: "access request",
-            recieverId: owner._id,
-            senderId: req.user._id,
+            reciever: owner._id,
+            sender: req.user._id,
+            doc: docId,
             notification: notification
         })
 
@@ -443,7 +444,7 @@ exports.getNotifications = async function (req, res) {
         //console.log(notificationsArray)
 
         const notifications = await NotificationModel.find({
-            recieverId: req.user._id
+            reciever: req.user._id
         })
 
         res.status(200).json({

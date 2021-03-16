@@ -45,12 +45,12 @@ const Notifications = () => {
                             return <>
                                 <div>{notification.type}</div>
                                 <div>{notification.notification}</div>
-                                <div>{notification.docId}</div>
-                                <div>{notification.senderId}</div>
+                                <div>{notification.doc}</div>
+                                <div>{notification.sender}</div>
                                 <button
                                     onClick={
                                         () => {
-                                            acceptHandler(notification.senderId, notification.docId)
+                                            acceptHandler(notification.sender, notification.doc)
                                         }
                                     }
                                 >Accept</button>
