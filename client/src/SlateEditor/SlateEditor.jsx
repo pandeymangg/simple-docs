@@ -113,8 +113,14 @@ const SlateEditor = (props) => {
 
     <div className="base-div" >
 
-      {
+      {/* {
         loggedIn && errorMessage !== "" ? <Redirect to={{ pathname: 'error', state: { message: errorMessage, statusCode: errorStatus } }} />
+          : null
+      } */}
+
+      {
+        loggedIn && errorMessage !== ""
+          ? <Redirect to={{ pathname:"/permission", state: { message: errorMessage, docId } }} />
           : null
       }
 

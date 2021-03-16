@@ -7,6 +7,8 @@ import SlateEditor from './SlateEditor/SlateEditor'
 import { useContext } from 'react'
 import AuthContext from './context/AuthContext'
 import ErrorPage from './components/ErrorPage'
+import Permission from './components/Permission'
+import Notifications from './components/Notifications'
 
 function App() {
 
@@ -41,6 +43,16 @@ function App() {
       }
 
       <Route path="/error" exact render={ (props) => <ErrorPage {...props} /> } />
+
+      {
+       <Route path="/permission" exact render={
+          (props) => <Permission { ...props } />
+        } />
+      }
+
+      {
+        loggedIn === true && <Route path="/notifications" component={ Notifications } />
+      }
 
 
     </>

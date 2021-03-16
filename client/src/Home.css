@@ -130,7 +130,12 @@
     color: #6B645C;
 }
 
-
+.user-role--div{
+    background-color: #7E8C8D;
+    color: #eee;
+    border-radius: 10px;
+    padding: 5px;
+}
 
 
 /* .error-box {

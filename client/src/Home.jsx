@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import './Home.css'
+import AuthContext from './context/AuthContext'
 
 const Home = (props) => {
     const [title, setTitle] = useState("")
     const [docs, setDocs] = useState([])
     const [errorMessage, setErrorMessage] = useState("")
+
+    const { currentUser } = useContext(AuthContext)
 
     const clickHandler = async () => {
         async function createNewDoc() {
@@ -94,7 +97,7 @@ const Home = (props) => {
                         <label className="doc-title" >Title </label>
 
                         {
-                            errorMessage !== "" && <div className="error-box-home" > <p className="error-text-home" > { errorMessage } </p> </div>
+                            errorMessage !== "" && <div className="error-box-home" > <p className="error-text-home" > {errorMessage} </p> </div>
                         }
 
                     </div>
@@ -135,6 +138,7 @@ const Home = (props) => {
 
                 {
                     docs.map(doc => {
+
                         return (
 
                             <div className="single-doc" key={doc._id} >
@@ -144,11 +148,22 @@ const Home = (props) => {
                                 >
                                     {doc.name}
                                 </h3>
+                                {
+                                    doc.collaborators.includes(currentUser._id)
+                                        ? <div className="user-role--div" >Collaborator</div>
+                                        : <div className="user-role--div" >Owner</div>
+                                }
 
-                                <span
-                                    className="material-icons delete-doc-icon"
-                                    onClick={(id) => deleteDocHandler(doc._id)}
-                                >delete</span>
+                                {
+                                    doc.collaborators.includes(currentUser._id)
+                                        ? null
+                                        : <span
+                                            className="material-icons delete-doc-icon"
+                                            onClick={(id) => deleteDocHandler(doc._id)}
+                                        >delete</span>
+                                }
+
+
 
                             </div>
 

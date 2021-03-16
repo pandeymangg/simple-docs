@@ -2,9 +2,22 @@ const DocModel = require('../models/docModel')
 
 exports.getAllDocs = async function (req, res) {
     try {
-        const docs = await DocModel.find({
-            owner: req.user._id
+        const allDocs = await DocModel.find({})
+
+        const ownerDocs = await DocModel.find({
+            owner: req.user._id,
         })
+
+        let collabDocs = allDocs.filter(doc => {
+            if(doc.collaborators.includes(req.user._id))  {
+                return true
+            }
+            return false
+        })
+
+        const docs = ownerDocs.concat(collabDocs)
+
+        //console.log(collabDocs.length)
 
         res.status(200).json({
             status: 'success',
@@ -13,6 +26,7 @@ exports.getAllDocs = async function (req, res) {
                 docs
             }
         })
+
     } catch (err) {
         res.status(400).json({
             status: 'fail',
@@ -33,7 +47,7 @@ exports.doesDocExist = async function (req, res, next) {
         if (nameCheck) {
             res.status(400).json({
                 status: "fail",
-                message: "document of same name already exists!"
+                message: "document of the same name already exists!"
             })
             return
         }

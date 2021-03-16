@@ -9,6 +9,13 @@ const docSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'UserModel'
     },
+    collaborators: {
+        type: [{
+            type: mongoose.Schema.ObjectId,
+            ref: 'UserModel'
+        }],
+        default: []
+    },
     content: {
         type: Array,
         default: [

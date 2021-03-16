@@ -230,11 +230,50 @@ exports.isLoggedIn = async function (req, res) {
     }
 }
 
+exports.getOwner = async function (req, res) {
+    try {
+        const doc = await DocModel.findById(req.params.docId)
+
+        res.status(200).json({
+            status: "success",
+            owner: doc.owner
+        })
+    } catch (err) {
+        res.status(400).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+}
+
+
 exports.isOwner = async function (req, res, next) {
     try {
         const doc = await DocModel.findById(req.params.id)
 
         if (!req.user._id.equals(doc.owner)) {
+            res.status(400).json({
+                status: "fail",
+                message: "You are not authorised to delete this document!"
+            })
+
+            return
+        }
+
+        next()
+    } catch (err) {
+        res.status(400).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+}
+
+exports.isOwnerOrCollaborator = async function (req, res, next) {
+    try {
+        const doc = await DocModel.findById(req.params.id)
+
+        if (!req.user._id.equals(doc.owner) && !doc.collaborators.includes(req.user._id)) {
             res.status(400).json({
                 status: "fail",
                 message: "You are not authorised to access this document!"
@@ -244,6 +283,156 @@ exports.isOwner = async function (req, res, next) {
         }
 
         next()
+    } catch (err) {
+        res.status(400).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+}
+
+exports.acceptRequest = async function (req, res) {
+    try {
+
+        //const senderId = req.user._id
+        const senderId = req.body.senderId
+        const docId = req.params.docId
+
+        const doc = await DocModel.findById(docId)
+        const user = await UserModel.findById(senderId)
+
+        if (!doc || !user) {
+            res.status(400).json({
+                status: "fail",
+                message: "error"
+            })
+            return
+        }
+
+        if (user._id.equals(doc.owner)) {
+            res.status(400).json({
+                status: "fail",
+                message: "you are already the owner!"
+            })
+            return
+        }
+
+        if (doc.collaborators.includes(user._id)) {
+            res.status(400).json({
+                status: "fail",
+                message: "you are already a collaborator!"
+            })
+            return
+        }
+
+        const collaboratorsNew = [...doc.collaborators]
+        collaboratorsNew.push(user._id)
+
+        //console.log(collaboratorsNew)
+
+        const updatedDoc = await DocModel.findByIdAndUpdate(docId, {
+            collaborators: collaboratorsNew
+        }, { new: true })
+
+        res.status(200).json({
+            status: "success",
+            doc: updatedDoc
+        })
+
+
+    } catch (err) {
+        res.status(400).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+}
+
+exports.createAccessNotification = async function (req, res) {
+    try {
+        const { docId, senderId } = req.body
+
+        const testDoc = await DocModel.findById(docId)
+
+        // console.log(testDoc.owner.equals(senderId))
+        // console.log(testDoc.owner.equals(req.user._id))
+
+        if(testDoc.owner.equals(senderId) || testDoc.owner.equals(req.user._id)) {
+            res.status(400).json({
+                status: 'fail',
+                message: 'you are already an owner'
+            })
+
+            return
+        }
+
+        if(!req.user._id.equals(senderId)) {
+            res.status(400).json({
+                status: "fail",
+                message: "you are not the sender"
+            })
+            return
+        }
+
+        const sender = await UserModel.findById(senderId)
+        const doc = await DocModel.findById(docId)
+
+        if(!sender || !doc) {
+            res.status(400).json({
+                status: 'fail',
+                message: 'no resource exists'
+            })
+
+            return
+        }
+
+        const owner = await UserModel.findById(req.params.userId)
+
+        if(!owner) {
+            res.status(400).json({
+                status: "fail",
+                message: "no user exists"
+            })
+            return
+        }
+
+        const notification = `User ${sender.username} has requested access for the document ${doc.name}`
+        const notificationArray = [...owner.notifications]
+
+        notificationArray.push({
+            type: "access request",
+            senderId,
+            docId,
+            notification
+        })
+
+        const updatedUser = await UserModel.findByIdAndUpdate(req.params.userId, {
+            notifications: notificationArray
+        }, {new: true})
+
+        //console.log(updatedUser)
+
+        res.send("notification sent!")
+
+    } catch (err) {
+        res.status(400).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+}
+
+exports.getNotifications = async function (req, res) {
+    try {
+
+        const notificationsArray = req.user.notifications
+        //console.log(notificationsArray)
+
+        res.status(200).json({
+            status: "success",
+            notifications: notificationsArray
+        })
+
     } catch (err) {
         res.status(400).json({
             status: "fail",

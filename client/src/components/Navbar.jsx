@@ -33,6 +33,10 @@ const Navbar = () => {
                         loggedIn === true ? <LogoutButton /> : null
                     }
 
+                    {
+                        loggedIn === true ? <li><Link to="/notifications">Notifications</Link></li> : null
+                    }
+
                 </ul>
             </nav>
         </header>
