@@ -25,7 +25,7 @@ const Notifications = () => {
         getNotifications()
     }, [])
 
-    const acceptHandler = (senderId, docId) => {
+    const acceptHandler = async (senderId, docId, notificationId) => {
         //console.log(senderId, docId)
         async function acceptRequest() {
 
@@ -36,6 +36,10 @@ const Notifications = () => {
 
                 if (response.data.status === "success") {
                     setAccepted(true)
+                    const response = await axios.delete(`/api/notifications/${notificationId}`)
+                    if(response.data.status === "success") {
+                        getNotifications()
+                    }
                 }
 
             } catch (err) {
@@ -47,6 +51,7 @@ const Notifications = () => {
         }
 
         acceptRequest()
+
     }
 
     return (
@@ -65,7 +70,7 @@ const Notifications = () => {
                                 <button
                                     onClick={
                                         () => {
-                                            acceptHandler(notification.sender, notification.doc)
+                                            acceptHandler(notification.sender, notification.doc, notification._id)
                                         }
                                     }
                                 >Accept</button>
