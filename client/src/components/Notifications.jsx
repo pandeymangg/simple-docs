@@ -7,6 +7,8 @@ const Notifications = () => {
     //const { currentUser } = useContext(AuthContext)
     const [notificationsArray, setNotificationsArray] = useState([])
 
+    const [accepted, setAccepted] = useState(false)
+
     async function getNotifications() {
         try {
             const response = await axios.get('/api/users/notifications')
@@ -24,13 +26,24 @@ const Notifications = () => {
     }, [])
 
     const acceptHandler = (senderId, docId) => {
-        console.log(senderId, docId)
+        //console.log(senderId, docId)
         async function acceptRequest() {
-            const response = await axios.post(`/api/users/${docId}`, {
-                senderId: senderId
-            })
 
-            console.log(response.data)
+            try {
+                const response = await axios.post(`/api/users/${docId}`, {
+                    senderId: senderId
+                })
+
+                if (response.data.status === "success") {
+                    setAccepted(true)
+                }
+
+            } catch (err) {
+                console.log(err.message)
+            }
+
+
+            //console.log(response.data)
         }
 
         acceptRequest()
@@ -38,15 +51,17 @@ const Notifications = () => {
 
     return (
         <div>
+
+            {
+                accepted ? <div> Sender added as a collaborator! </div> : null
+            }
+
             {
                 notificationsArray
-                    ? notificationsArray.map(notification => {
+                    ? notificationsArray.map((notification, index) => {
                         if (notification) {
-                            return <>
-                                <div>{notification.type}</div>
+                            return <div key={index} >
                                 <div>{notification.notification}</div>
-                                <div>{notification.doc}</div>
-                                <div>{notification.sender}</div>
                                 <button
                                     onClick={
                                         () => {
@@ -55,7 +70,7 @@ const Notifications = () => {
                                     }
                                 >Accept</button>
                                 <button>Decline</button>
-                            </>
+                            </div>
                         } else {
                             return null
                         }

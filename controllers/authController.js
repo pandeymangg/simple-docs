@@ -460,3 +460,21 @@ exports.getNotifications = async function (req, res) {
         })
     }
 }
+
+exports.deleteNotification = async function (req, res) {
+    try {
+
+        await NotificationModel.findByIdAndDelete(req.params.id)
+
+        res.status(200).json({
+            status: "success",
+            message: "notification deleted!"
+        })
+
+    } catch(err) {
+        res.status(400).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+}
