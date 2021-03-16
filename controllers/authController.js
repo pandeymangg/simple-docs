@@ -2,6 +2,7 @@ const UserModel = require('../models/userModel')
 const DocModel = require('../models/docModel')
 const jwt = require('jsonwebtoken')
 const { promisify } = require('util')
+const NotificationModel = require('../models/notificationModel')
 
 const signToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -350,14 +351,15 @@ exports.acceptRequest = async function (req, res) {
 
 exports.createAccessNotification = async function (req, res) {
     try {
-        const { docId, senderId } = req.body
+        const docId = req.body.docId
+        const senderId = req.user._id
 
-        const testDoc = await DocModel.findById(docId)
+        const doc = await DocModel.findById(docId)
 
-        // console.log(testDoc.owner.equals(senderId))
-        // console.log(testDoc.owner.equals(req.user._id))
+        // console.log(doc.owner.equals(senderId))
+        // console.log(doc.owner.equals(req.user._id))
 
-        if(testDoc.owner.equals(senderId) || testDoc.owner.equals(req.user._id)) {
+        if(doc.owner.equals(senderId) || doc.owner.equals(req.user._id)) {
             res.status(400).json({
                 status: 'fail',
                 message: 'you are already an owner'
@@ -374,8 +376,8 @@ exports.createAccessNotification = async function (req, res) {
             return
         }
 
-        const sender = await UserModel.findById(senderId)
-        const doc = await DocModel.findById(docId)
+        //const sender = await UserModel.findById(senderId)
+        const sender = req.user
 
         if(!sender || !doc) {
             res.status(400).json({
@@ -386,7 +388,8 @@ exports.createAccessNotification = async function (req, res) {
             return
         }
 
-        const owner = await UserModel.findById(req.params.userId)
+        //const owner = await UserModel.findById(req.params.userId)
+        const owner = await UserModel.findById(doc.owner)
 
         if(!owner) {
             res.status(400).json({
@@ -397,22 +400,33 @@ exports.createAccessNotification = async function (req, res) {
         }
 
         const notification = `User ${sender.username} has requested access for the document ${doc.name}`
-        const notificationArray = [...owner.notifications]
 
-        notificationArray.push({
-            type: "access request",
-            senderId,
-            docId,
-            notification
-        })
+        // const notificationArray = [...owner.notifications]
 
-        const updatedUser = await UserModel.findByIdAndUpdate(req.params.userId, {
-            notifications: notificationArray
-        }, {new: true})
+        // notificationArray.push({
+        //     type: "access request",
+        //     senderId,
+        //     docId,
+        //     notification
+        // })
+
+        // const updatedUser = await UserModel.findByIdAndUpdate(req.params.userId, {
+        //     notifications: notificationArray
+        // }, {new: true})
 
         //console.log(updatedUser)
 
-        res.send("notification sent!")
+        const newNotification = await NotificationModel.create({
+            type: "access request",
+            recieverId: owner._id,
+            senderId: req.user._id,
+            notification: notification
+        })
+
+        res.status(200).json({
+            status: "success",
+            notification: newNotification
+        })
 
     } catch (err) {
         res.status(400).json({
@@ -425,12 +439,17 @@ exports.createAccessNotification = async function (req, res) {
 exports.getNotifications = async function (req, res) {
     try {
 
-        const notificationsArray = req.user.notifications
+        //const notificationsArray = req.user.notifications
         //console.log(notificationsArray)
+
+        const notifications = await NotificationModel.find({
+            recieverId: req.user._id
+        })
 
         res.status(200).json({
             status: "success",
-            notifications: notificationsArray
+            results: notifications.length,
+            notifications
         })
 
     } catch (err) {

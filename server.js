@@ -30,7 +30,8 @@ app.delete('/api/docs/:id', protect, isOwner, deleteDoc)
 
 app.get('/api/docs/getOwner/:docId', protect, getOwner)
 
-app.post('/api/users/:userId/notifications/requestAccess', protect, createAccessNotification)
+//app.post('/api/users/:userId/notifications/requestAccess', protect, createAccessNotification)
+app.post('/api/users/notifications/requestAccess', protect, createAccessNotification)
 
 app.get('/api/users/notifications', protect, getNotifications)
 
