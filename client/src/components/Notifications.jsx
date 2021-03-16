@@ -7,8 +7,6 @@ const Notifications = () => {
     //const { currentUser } = useContext(AuthContext)
     const [notificationsArray, setNotificationsArray] = useState([])
 
-    const [accepted, setAccepted] = useState(false)
-
     async function getNotifications() {
         try {
             const response = await axios.get('/api/users/notifications')
@@ -25,7 +23,7 @@ const Notifications = () => {
         getNotifications()
     }, [])
 
-    const acceptHandler = async (senderId, docId, notificationId) => {
+    const acceptHandler = (senderId, docId, notificationId) => {
         //console.log(senderId, docId)
         async function acceptRequest() {
 
@@ -34,8 +32,9 @@ const Notifications = () => {
                     senderId: senderId
                 })
 
+                console.log(response.data)
+
                 if (response.data.status === "success") {
-                    setAccepted(true)
                     const response = await axios.delete(`/api/notifications/${notificationId}`)
                     if(response.data.status === "success") {
                         getNotifications()
@@ -54,12 +53,21 @@ const Notifications = () => {
 
     }
 
+    const declineHandler = (notificationId) => {
+        async function declineRequest() {
+            const response = await axios.delete(`/api/notifications/${notificationId}`)
+
+            if(response.data.status === "success") {
+                getNotifications()
+            }
+
+        }
+
+        declineRequest()
+    }
+
     return (
         <div>
-
-            {
-                accepted ? <div> Sender added as a collaborator! </div> : null
-            }
 
             {
                 notificationsArray
@@ -74,7 +82,12 @@ const Notifications = () => {
                                         }
                                     }
                                 >Accept</button>
-                                <button>Decline</button>
+
+                                <button
+                                    onClick={
+                                        () => declineHandler(notification._id)
+                                    }
+                                >Decline</button>
                             </div>
                         } else {
                             return null
