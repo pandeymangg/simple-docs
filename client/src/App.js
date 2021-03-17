@@ -9,6 +9,7 @@ import AuthContext from './context/AuthContext'
 import ErrorPage from './components/ErrorPage'
 import Permission from './components/Permission'
 import Notifications from './components/Notifications'
+import Navbar from './components/Navbar'
 
 function App() {
 
@@ -17,10 +18,15 @@ function App() {
   return (
     <>
 
-      <Route path="/" component={HomePage} />
-      
+      <Navbar />
+
       {
-        ( loggedIn === true || loggedIn === false ) && <Route path="/login" component={Login} />
+        (loggedIn === true || loggedIn === false) && <Route path="/" exact component={HomePage} />
+      }
+
+
+      {
+        (loggedIn === true || loggedIn === false) && <Route path="/login" component={Login} />
       }
 
 
@@ -42,16 +48,16 @@ function App() {
         )
       }
 
-      <Route path="/error" exact render={ (props) => <ErrorPage {...props} /> } />
+      <Route path="/error" exact render={(props) => <ErrorPage {...props} />} />
 
       {
-       <Route path="/permission" exact render={
-          (props) => <Permission { ...props } />
+        <Route path="/permission" exact render={
+          (props) => <Permission {...props} />
         } />
       }
 
       {
-        loggedIn === true && <Route path="/notifications" component={ Notifications } />
+        loggedIn === true && <Route path="/notifications" component={Notifications} />
       }
 
 

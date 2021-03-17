@@ -16,7 +16,10 @@ const Navbar = () => {
         <header>
             <nav>
                 <ul>
-                    <li> <Link to="/">Home</Link> </li>
+
+                    {
+                        loggedIn === false && <li> <Link to="/">Home</Link> </li>
+                    }
 
                     {
                         loggedIn === true ? null
