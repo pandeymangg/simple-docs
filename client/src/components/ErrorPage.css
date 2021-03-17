@@ -1,0 +1,21 @@
+.error-div--main {
+    height: 100vh;
+}
+
+.error--div {
+    width: 80%;
+    height: 40%;
+    margin: auto;
+    text-align: center;
+    font-family: 'Cutive', serif;
+    font-size: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gradient-text {
+    background-image: linear-gradient(60deg, #000000,#958E69);
+    background-clip: text;
+    color: transparent;
+}
