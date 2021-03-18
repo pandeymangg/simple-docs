@@ -1,11 +1,13 @@
 import React, { useContext } from 'react'
 import { Redirect } from 'react-router'
+import { useHistory } from 'react-router-dom'
 import AuthContext from '../context/AuthContext'
 import './HomePage.css'
 
 const HomePage = () => {
 
     const { loggedIn } = useContext(AuthContext)
+    const history = useHistory()
     let imageName = require("../images/simpleDocsSS1.JPG")
 
     const homeNotLoggedIn = (
@@ -20,6 +22,8 @@ const HomePage = () => {
                     <img src={imageName.default} height="300" width="450"  ></img>
                 </div>
 
+                <div className="headerDivider" ></div>
+
                 <div className="main-content-content--div">
                     {/* Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi nobis perferendis veritatis odit minus quibusdam reiciendis vero temporibus error repellendus. */}
 
@@ -33,7 +37,13 @@ const HomePage = () => {
 
                     </p>
 
-                    <button className="login-button--sm" >Log In</button>
+                    <button className="login-button--sm"
+                        onClick={
+                            () => {
+                                history.push("/login")
+                            }
+                        }
+                    >Log In</button>
 
                 </div>
 
