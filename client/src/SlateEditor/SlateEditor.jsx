@@ -126,7 +126,7 @@ const SlateEditor = (props) => {
 
       {
         (loggedIn && errorMessage !== "You are not authorised to access this document!" && errorMessage !== "")
-          ? <Redirect to={{ pathname: "/error", state: { message: errorMessage, docId } }} />
+          ? <Redirect to={{ pathname: "/error", state: { message: errorMessage, statusCode: errorStatus } }} />
           : null
       }
 
