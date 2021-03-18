@@ -34,7 +34,7 @@ img {
     margin-left: 20px;
 }
 
-.heading-secondary {
+.heading-secondary-home {
     margin-top: -3px;
 }
 
@@ -57,4 +57,10 @@ img {
     border-left: 2px solid #333;
     height: 280px;
     margin: 10px 10px;
+}
+
+.main-features--div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

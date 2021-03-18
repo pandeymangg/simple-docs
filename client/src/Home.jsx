@@ -75,57 +75,62 @@ const Home = (props) => {
 
     return (
         <>
-            <h1 className="heading-primary" >
+            {/* <h1 className="heading-primary" >
                 <span style={{ color: '#623C3D' }} >simple</span><span style={{ color: '#6B645C' }} >Docs</span>
-            </h1>
+            </h1> */}
 
-            <div className="new-doc-card" >
+            <div className="dashboard-container" >
 
-                <div className="add-new-doc" >
-                    <span className="add-btn" disabled >
-                        <span className="material-icons" >
-                            add
-                    </span>
-                    </span>
 
-                    <h3 className="heading-secondary" >Add new document</h3>
-                </div>
 
-                <form className="add-new-doc-form" >
+                <div className="new-doc-card" >
 
-                    <div style={{ display: "flex" }} >
-                        <label className="doc-title" >Title </label>
+                    <div className="add-new-doc" >
+                        <span className="add-btn" disabled >
+                            <span className="material-icons" >
+                                add
+                            </span>
+                        </span>
 
-                        {
-                            errorMessage !== "" && <div className="error-box-home" > <p className="error-text-home" > {errorMessage} </p> </div>
-                        }
-
+                        <h3 className="heading-secondary" >Add new document</h3>
                     </div>
 
-                    <input
-                        type="text"
-                        placeholder="Enter title of the document"
-                        onChange={(e) => {
-                            setTitle(e.target.value)
-                        }}
-                        className="doc-title-input"
-                    />
+                    <form className="add-new-doc-form" >
 
-                    <button
-                        type="submit"
-                        onClick={
-                            (e) => {
-                                e.preventDefault()
-                                clickHandler()
+                        <div style={{ display: "flex" }} >
+                            <label className="doc-title" >Title </label>
+
+                            {
+                                errorMessage !== "" && <div className="error-box-home" > <p className="error-text-home" > {errorMessage} </p> </div>
                             }
-                        }
-                        disabled={!title}
-                        className="add-new-doc-btn"
-                    >
-                        Add
-                    </button>
 
-                </form>
+                        </div>
+
+                        <input
+                            type="text"
+                            placeholder="Enter title of the document"
+                            onChange={(e) => {
+                                setTitle(e.target.value)
+                            }}
+                            className="doc-title-input"
+                        />
+
+                        <button
+                            type="submit"
+                            onClick={
+                                (e) => {
+                                    e.preventDefault()
+                                    clickHandler()
+                                }
+                            }
+                            disabled={!title}
+                            className="add-new-doc-btn"
+                        >
+                            Add
+                        </button>
+
+                    </form>
+                </div>
             </div>
 
             <div className="docs-card" >

@@ -1,14 +1,14 @@
 import React, { useContext } from 'react'
 import { Redirect } from 'react-router'
 import { useHistory } from 'react-router-dom'
-import AuthContext from '../context/AuthContext'
+import AuthContext from '../../context/AuthContext'
 import './HomePage.css'
 
 const HomePage = () => {
 
     const { loggedIn } = useContext(AuthContext)
     const history = useHistory()
-    let imageName = require("../images/simpleDocsSS1.JPG")
+    let imageName = require("../../images/simpleDocsSS1.JPG")
 
     const homeNotLoggedIn = (
         <div className="main-div" >
@@ -27,7 +27,7 @@ const HomePage = () => {
                 <div className="main-content-content--div">
                     {/* Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi nobis perferendis veritatis odit minus quibusdam reiciendis vero temporibus error repellendus. */}
 
-                    <h2 className="heading-secondary" >Web app for managing documents!</h2>
+                    <h2 className="heading-secondary-home" >Web app for managing documents!</h2>
                     <p>
                         
                         With a simple rich text editor made with slatejs!

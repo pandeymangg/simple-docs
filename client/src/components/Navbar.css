@@ -1,0 +1,43 @@
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+.navbar {
+    /* background-color: #C3C7BE; */
+    background-color: #D9DBD6;
+    color: #eee;
+    height: 80px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    overflow: auto;
+    padding: 0 40px;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.logo {
+    font-family: 'Cutive', serif;
+}
+
+.navbar ul {
+    display: flex;
+    font-family: 'Cutive', serif;
+}
+
+.navbar ul li {
+    padding: 10px;
+    margin: 0 5px;
+}

@@ -15,6 +15,17 @@ const LogoutButton = () => {
         <div>
             <button
                 onClick={logout}
+                style={{
+                    padding: '10px',
+                    width: "100px",
+                    backgroundColor: 'teal',
+                    border: 'none',
+                    outline: 'none',
+                    cursor: "pointer",
+                    color: '#eee',
+                    borderRadius: "15px",
+                    fontFamily: "Cutive, serif"
+                }}
             >
                 Log Out
             </button>

@@ -124,6 +124,7 @@
 
 .doc-name {
     cursor: pointer;
+    width: 100px;
 }
 
 .doc-name:hover {
@@ -137,6 +138,9 @@
     padding: 5px;
 }
 
+.dashboard-container {
+    margin-top: 80px;
+}
 
 /* .error-box {
     background: #f4dede;
