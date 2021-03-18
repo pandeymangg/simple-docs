@@ -359,7 +359,7 @@ exports.createAccessNotification = async function (req, res) {
         // console.log(doc.owner.equals(senderId))
         // console.log(doc.owner.equals(req.user._id))
 
-        if(doc.owner.equals(senderId) || doc.owner.equals(req.user._id)) {
+        if (doc.owner.equals(senderId) || doc.owner.equals(req.user._id)) {
             res.status(400).json({
                 status: 'fail',
                 message: 'you are already an owner'
@@ -368,7 +368,7 @@ exports.createAccessNotification = async function (req, res) {
             return
         }
 
-        if(!req.user._id.equals(senderId)) {
+        if (!req.user._id.equals(senderId)) {
             res.status(400).json({
                 status: "fail",
                 message: "you are not the sender"
@@ -379,7 +379,7 @@ exports.createAccessNotification = async function (req, res) {
         //const sender = await UserModel.findById(senderId)
         const sender = req.user
 
-        if(!sender || !doc) {
+        if (!sender || !doc) {
             res.status(400).json({
                 status: 'fail',
                 message: 'no resource exists'
@@ -391,7 +391,7 @@ exports.createAccessNotification = async function (req, res) {
         //const owner = await UserModel.findById(req.params.userId)
         const owner = await UserModel.findById(doc.owner)
 
-        if(!owner) {
+        if (!owner) {
             res.status(400).json({
                 status: "fail",
                 message: "no user exists"
