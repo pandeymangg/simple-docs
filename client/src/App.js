@@ -10,6 +10,7 @@ import ErrorPage from './components/ErrorPage/ErrorPage'
 import Permission from './components/Permission'
 import Notifications from './components/Notifications'
 import Navbar from './components/Navbar'
+import DeleteDoc from './DeleteDoc'
 
 function App() {
 
@@ -51,6 +52,8 @@ function App() {
       <Route path="/error" exact render={(props) => <ErrorPage {...props} />} />
 
       {
+        (loggedIn === true || loggedIn === false)
+        &&
         <Route path="/permission" exact render={
           (props) => <Permission {...props} />
         } />
@@ -60,6 +63,9 @@ function App() {
         loggedIn === true && <Route path="/notifications" component={Notifications} />
       }
 
+      {
+        loggedIn === true && <Route path="/delete" component={DeleteDoc} />
+      }
 
     </>
   )

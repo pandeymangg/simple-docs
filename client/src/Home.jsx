@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import './Home.css'
 import AuthContext from './context/AuthContext'
+//import { useHistory } from 'react-router'
 
 const Home = (props) => {
     const [title, setTitle] = useState("")
@@ -45,13 +46,13 @@ const Home = (props) => {
         }
     }
 
+    async function getAllDocs() {
+        const docs = await axios.get('/api/docs')
+
+        setDocs(docs.data.data.docs)
+    }
+
     useEffect(() => {
-        async function getAllDocs() {
-            const docs = await axios.get('/api/docs')
-
-            setDocs(docs.data.data.docs)
-        }
-
         getAllDocs()
     }, [])
 
@@ -69,8 +70,20 @@ const Home = (props) => {
         await axios.delete(`/api/docs/${id}`)
 
         props.history.push({
-            pathname: '/delete'
+            pathname: "/delete"
         })
+
+        // try {
+        //     await axios.delete(`/api/docs/${id}`)
+        //     getAllDocs()
+        // } catch (err) {
+        //     console.log(err)
+        // }
+
+
+        // props.history.push({
+        //     pathname: '/delete'
+        // })
     }
 
     return (

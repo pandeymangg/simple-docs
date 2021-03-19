@@ -78,32 +78,30 @@ const Notifications = () => {
                     ? notificationsArray.map((notification, index) => {
                         if (notification) {
                             return (
-                                <>
-                                    <div key={index} className="single-notification" >
+                                <div key={index} className="single-notification" >
 
-                                        <div className="notif-div" >{notification.notification}</div>
+                                    <div className="notif-div" >{notification.notification}</div>
 
-                                        <div>
-                                            <button
-                                                onClick={
-                                                    () => {
-                                                        acceptHandler(notification.sender, notification.doc, notification._id)
-                                                    }
+                                    <div>
+                                        <button
+                                            onClick={
+                                                () => {
+                                                    acceptHandler(notification.sender, notification.doc, notification._id)
                                                 }
-                                                className="accept-btn"
-                                            >Accept</button>
+                                            }
+                                            className="accept-btn"
+                                        >Accept</button>
 
-                                            <button
-                                                onClick={
-                                                    () => declineHandler(notification._id)
-                                                }
-                                                className="decline-btn"
-                                            >Decline</button>
-
-                                        </div>
+                                        <button
+                                            onClick={
+                                                () => declineHandler(notification._id)
+                                            }
+                                            className="decline-btn"
+                                        >Decline</button>
 
                                     </div>
-                                </>
+
+                                </div>
                             )
                         } else {
                             return null
