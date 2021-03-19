@@ -1,0 +1,52 @@
+.notifications-container {
+    border: 3px solid #333;
+    border-radius: 25px;
+    background-color: #fff;
+    width: 60%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 60px;
+    height: fit-content;
+    min-height: 200px;
+    padding: 10px;
+}
+
+.single-notification {
+    font-family: "Cutive", serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.notif-div {
+    margin-bottom: 10px;
+}
+
+.accept-btn {
+    margin-right: 10px;
+    padding: 8px;
+    width: 100px;
+    outline: none;
+    background-color: teal;
+    color: #eee;
+    font-family: "Cutive", serif;
+    border-radius: 10px;
+    border: 1px solid #333;
+    cursor: pointer;
+}
+
+.decline-btn {
+    padding: 8px;
+    width: 100px;
+    outline: none;
+    background-color: crimson;
+    color: #eee;
+    font-family: "Cutive", serif;
+    border-radius: 10px;
+    border: 1px solid #333;
+    cursor: pointer;
+}

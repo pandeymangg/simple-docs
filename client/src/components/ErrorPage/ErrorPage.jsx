@@ -17,7 +17,7 @@ const ErrorPage = (props) => {
 
             <div className="error--div" >
                 <div className="oops-div" >
-                    <h1 className="gradient-text" >Oops :(</h1>
+                    <h1 className="gradient-text" >Oops!</h1>
                 </div>
             </div>
 

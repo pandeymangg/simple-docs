@@ -1,0 +1,46 @@
+.permission-container {
+    width: 60%;
+    max-width: 1100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: auto;
+    border: 3px solid #333;
+    padding: 20px;
+    font-family: "Cutive", serif;
+    border-radius: 25px;
+    background-color: #fff;
+    box-shadow: 1px 1px 5px #333;
+    margin-top: 80px;
+}
+
+.err-div {
+    width: 20%;
+    height: 60%;
+    text-align: center;
+}
+
+.content-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.send-request-btn {
+    width: 140px;
+    height: 50px;
+    outline: none;
+    border-radius: 10px;
+    border: none;
+    border: 1px solid grey;
+    background-color: teal;
+    color: #eee;
+    font-family: "Cutive", serif;
+    cursor: pointer;
+}
+
+.send-request-btn:hover {
+    transform: scale(1.1);
+}

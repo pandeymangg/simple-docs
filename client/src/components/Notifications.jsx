@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import AuthContext from "../context/AuthContext"
+import './Notifications.css'
 
 const Notifications = () => {
 
@@ -36,7 +37,7 @@ const Notifications = () => {
 
                 if (response.data.status === "success") {
                     const response = await axios.delete(`/api/notifications/${notificationId}`)
-                    if(response.data.status === "success") {
+                    if (response.data.status === "success") {
                         getNotifications()
                     }
                 }
@@ -57,7 +58,7 @@ const Notifications = () => {
         async function declineRequest() {
             const response = await axios.delete(`/api/notifications/${notificationId}`)
 
-            if(response.data.status === "success") {
+            if (response.data.status === "success") {
                 getNotifications()
             }
 
@@ -67,28 +68,43 @@ const Notifications = () => {
     }
 
     return (
-        <div>
+        <div className="notifications-container" >
+            <div className="heading-secondary" >
+                <h2>Your Notifications</h2>
+            </div>
 
             {
                 notificationsArray
                     ? notificationsArray.map((notification, index) => {
                         if (notification) {
-                            return <div key={index} >
-                                <div>{notification.notification}</div>
-                                <button
-                                    onClick={
-                                        () => {
-                                            acceptHandler(notification.sender, notification.doc, notification._id)
-                                        }
-                                    }
-                                >Accept</button>
+                            return (
+                                <>
+                                    <div key={index} className="single-notification" >
 
-                                <button
-                                    onClick={
-                                        () => declineHandler(notification._id)
-                                    }
-                                >Decline</button>
-                            </div>
+                                        <div className="notif-div" >{notification.notification}</div>
+
+                                        <div>
+                                            <button
+                                                onClick={
+                                                    () => {
+                                                        acceptHandler(notification.sender, notification.doc, notification._id)
+                                                    }
+                                                }
+                                                className="accept-btn"
+                                            >Accept</button>
+
+                                            <button
+                                                onClick={
+                                                    () => declineHandler(notification._id)
+                                                }
+                                                className="decline-btn"
+                                            >Decline</button>
+
+                                        </div>
+
+                                    </div>
+                                </>
+                            )
                         } else {
                             return null
                         }

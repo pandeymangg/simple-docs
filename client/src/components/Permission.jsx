@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useContext } from "react"
 import AuthContext from "../context/AuthContext"
+import './Permission.css'
 
 const Permission = (props) => {
 
@@ -8,9 +9,6 @@ const Permission = (props) => {
 
     async function handleClick() {
         const docId = props.location.state.docId
-
-        const response = await axios.get(`/api/docs/getOwner/${docId}`)
-        const owner = response.data.owner
 
         // const result = await axios.post(`/api/users/${owner}/notifications/requestAccess`, {
         //     docId,
@@ -27,16 +25,26 @@ const Permission = (props) => {
     }
 
     return (
-        <div>
+        <div className="main" >
 
-            <p>{props.location.state.message}</p>
+            <div className="permission-container" >
 
 
-            <button
-                onClick={
-                    () => handleClick()
-                }
-            >Send request</button>
+                <div className="err-div" >
+                    <h1>401</h1>
+                </div>
+
+                <div className="content-div">
+                    <h2>{props.location.state.message}</h2>
+                    <button
+                        className="send-request-btn"
+                        onClick={
+                            () => handleClick()
+                        }
+                    >Send request</button>
+                </div>
+
+            </div>
 
         </div>
     )
