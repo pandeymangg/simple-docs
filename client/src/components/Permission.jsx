@@ -6,6 +6,8 @@ import './Permission.css'
 
 const Permission = (props) => {
 
+    const { loggedIn } = useContext(AuthContext)
+
     //const [state, setState] = useState(props.location.state || "false")
 
     async function handleClick() {
@@ -28,6 +30,12 @@ const Permission = (props) => {
     return (
 
         <div className="main" >
+
+            {
+                !loggedIn
+                ? <Redirect to='/login' />
+                : null
+            }
 
             {
                 props.location.state

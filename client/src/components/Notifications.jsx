@@ -1,11 +1,12 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
+import { Redirect } from "react-router"
 import AuthContext from "../context/AuthContext"
 import './Notifications.css'
 
 const Notifications = () => {
 
-    //const { currentUser } = useContext(AuthContext)
+    const { loggedIn } = useContext(AuthContext)
     const [notificationsArray, setNotificationsArray] = useState([])
 
     async function getNotifications() {
@@ -69,6 +70,13 @@ const Notifications = () => {
 
     return (
         <div className="notifications-container" >
+
+            {
+                !loggedIn
+                ? <Redirect to="/login" />
+                : null
+            }
+
             <div className="heading-secondary" >
                 <h2>Your Notifications</h2>
             </div>

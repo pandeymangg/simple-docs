@@ -60,7 +60,7 @@ function App() {
       }
 
       {
-        loggedIn === true && <Route path="/notifications" component={Notifications} />
+        (loggedIn === true || loggedIn === false) && <Route path="/notifications" component={Notifications} />
       }
 
       {
