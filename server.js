@@ -3,6 +3,7 @@ const app = express()
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const cookieParser = require('cookie-parser')
+const path = require('path')
 
 dotenv.config({ path: "./config.env" })
 
@@ -11,8 +12,17 @@ const { getAllDocs, createNewDocument, getSingleDoc, updateDoc, deleteDoc, doesD
 const { signup, login, protect, isOwnerOrCollaborator, isLoggedIn, logout, acceptRequest, isCollaborator, isOwner, createAccessNotification, getOwner, getNotifications, deleteNotification } = require('./controllers/authController')
 
 
-mongoose.connect('mongodb://localhost/test-db', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
+const DB = process.env.DB.replace(
+    '<password>',
+    process.env.DB_PASS
+)
+
+// mongoose.connect('mongodb://localhost/test-db', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
+//     .then(() => console.log('DB connection successful!'))
+
+mongoose.connect(DB, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
     .then(() => console.log('DB connection successful!'))
+
 
 app.use(cookieParser())
 
@@ -46,6 +56,17 @@ app.get('/api/users/notifications', protect, getNotifications)
 app.post('/api/users/:docId', protect, acceptRequest)
 
 app.delete('/api/notifications/:id', protect, deleteNotification)
+
+
+if(process.env.NODE_ENV === "production") {
+    app.use(express.static('client/build'))
+
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+    })
+
+}
+
 
 const port = process.env.PORT
 app.listen(port, () => {

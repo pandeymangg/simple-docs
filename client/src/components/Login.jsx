@@ -8,7 +8,7 @@ const Signup = () => {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [errorStatus, setErrorStatus] = useState("")
+    //const [errorStatus, setErrorStatus] = useState("")
     const [errorMessage, setErrorMessage] = useState("")
 
     const { loggedIn, getLoggedInState } = useContext(AuthContext)
@@ -29,10 +29,10 @@ const Signup = () => {
             getLoggedInState()
             history.push("/dashboard")
         } catch (err) {
-            console.log(err.response.data)
+            //console.log(err.response.data)
             if (err.response.data.status === "fail") {
                 setErrorMessage(err.response.data.message)
-                setErrorStatus(err.response.data.status)
+                //setErrorStatus(err.response.data.status)
             }
         }
 

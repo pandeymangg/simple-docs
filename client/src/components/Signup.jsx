@@ -12,7 +12,7 @@ const Signup = () => {
     const [passwordConfirm, setPasswordConfirm] = useState("")
 
 
-    const [errorStatus, setErrorStatus] = useState("")
+    //const [errorStatus, setErrorStatus] = useState("")
     const [errorMessage, setErrorMessage] = useState("")
 
     const { loggedIn } = useContext(AuthContext)
@@ -40,7 +40,7 @@ const Signup = () => {
             console.log(err.response.data)
             if (err.response.data.status === "fail") {
                 setErrorMessage(err.response.data.message)
-                setErrorStatus(err.response.data.status)
+                //setErrorStatus(err.response.data.status)
             }
         }
 

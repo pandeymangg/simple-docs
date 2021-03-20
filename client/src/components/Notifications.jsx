@@ -12,12 +12,12 @@ const Notifications = () => {
     async function getNotifications() {
         try {
             const response = await axios.get('/api/users/notifications')
-            console.log(response.data)
+            //console.log(response.data)
 
             setNotificationsArray(response.data.notifications)
 
         } catch (err) {
-            console.log(err)
+            //console.log(err)
         }
     }
 
@@ -34,7 +34,7 @@ const Notifications = () => {
                     senderId: senderId
                 })
 
-                console.log(response.data)
+                //console.log(response.data)
 
                 if (response.data.status === "success") {
                     const response = await axios.delete(`/api/notifications/${notificationId}`)
@@ -44,7 +44,7 @@ const Notifications = () => {
                 }
 
             } catch (err) {
-                console.log(err.message)
+                //console.log(err.message)
             }
 
 

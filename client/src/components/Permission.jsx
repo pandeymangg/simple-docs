@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useContext, useEffect, useState } from "react"
+import { useContext } from "react"
 import { Redirect } from "react-router"
 import AuthContext from "../context/AuthContext"
 import './Permission.css'
@@ -18,12 +18,12 @@ const Permission = (props) => {
         //     senderId: currentUser._id
         // })
 
-        const result = await axios.post(`/api/users/notifications/requestAccess`, {
+        await axios.post(`/api/users/notifications/requestAccess`, {
             docId,
             //senderId: currentUser._id
         })
 
-        console.log(result.data)
+        //console.log(result.data)
 
     }
 

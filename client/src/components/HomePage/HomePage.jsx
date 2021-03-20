@@ -19,7 +19,7 @@ const HomePage = () => {
 
             <div className="main-content--div" >
                 <div className="main-content-image--div" >
-                    <img src={imageName.default} height="300" width="450"  ></img>
+                    <img src={imageName.default} height="300" width="450" alt="simpleDocsSS"  ></img>
                 </div>
 
                 <div className="headerDivider" ></div>

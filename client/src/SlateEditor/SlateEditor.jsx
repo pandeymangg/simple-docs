@@ -20,7 +20,7 @@ const SlateEditor = (props) => {
   }
 
   //const [docId, setDocId] = useState(props.location.state.docId)
-  const [docId, setDocId] = useState(idCopy)
+  const [docId] = useState(idCopy)
   const [title, setTitle] = useState("")
   const [idStatus, setIdStatus] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
@@ -45,7 +45,7 @@ const SlateEditor = (props) => {
             setValue(doc.data.data.doc.content)
             setTitle(doc.data.data.doc.name)
           } catch (err) {
-            console.log(err.response.data)
+            //console.log(err.response.data)
             setErrorStatus(err.response.status)
             setErrorMessage(err.response.data.message)
           }
@@ -100,7 +100,7 @@ const SlateEditor = (props) => {
         })
         //console.log(updatedDoc)
       } catch (err) {
-        console.log(err.response.data)
+        //console.log(err.response.data)
         setErrorStatus(err.response.status)
         setErrorMessage(err.response.data.message)
       }
