@@ -11,6 +11,7 @@ import Permission from './components/Permission'
 import Notifications from './components/Notifications'
 import Navbar from './components/Navbar'
 import DeleteDoc from './DeleteDoc'
+import Signup from './components/Signup'
 
 function App() {
 
@@ -28,6 +29,10 @@ function App() {
 
       {
         (loggedIn === true || loggedIn === false) && <Route path="/login" component={Login} />
+      }
+
+      {
+        (loggedIn === true || loggedIn === false) && <Route path="/signup" component={Signup} />
       }
 
 

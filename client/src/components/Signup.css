@@ -1,0 +1,76 @@
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background: white;
+    border-radius: 10px;
+}
+
+.center h1 {
+    text-align: center;
+    padding: 0 0 20px 0;
+    border-bottom: 1px solid silver;
+}
+
+.center form {
+    padding: 0 40px;
+    box-sizing: border-box;
+}
+
+form .text-field {
+    position: relative;
+    border-bottom: 2px solid #adadad;
+    margin: 30px 0;
+}
+
+.text-field input {
+    width: 100%;
+    padding: 0 5px;
+    height: 40px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    background: none;
+}
+
+.signup-button {
+    width: 100%;
+    height: 50px;
+    border: 1px solid;
+    outline: none;
+    background: #2691d9;
+    border-radius: 25px;
+    font-size: 18px;
+    color: #eee;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+
+.signup-button:hover {
+    border-color: #2691d9;
+    transition: 0.1s;
+}
+
+.pass-text:hover {
+    cursor: pointer;
+    color: #2691d9;
+}
+
+.error-box {
+    background: #f4dede;
+    width: 80%;
+    height: 60px;
+    margin: auto;
+    color: #820918;
+    border-radius: 5px;
+    border: 1px solid #eee;
+}
+
+.error-text {
+    margin-left: 5%;
+    text-transform: capitalize;
+}

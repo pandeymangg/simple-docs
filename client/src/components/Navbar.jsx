@@ -35,6 +35,11 @@ const Navbar = () => {
 
                             {
                                 loggedIn === true ? null
+                                    : <li> <Link to="/signup" >Sign Up</Link> </li>
+                            }
+
+                            {
+                                loggedIn === true ? null
                                     : <li> <Link to="/login" >Log In</Link> </li>
                             }
 

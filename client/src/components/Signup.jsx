@@ -1,5 +1,8 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import axios from 'axios'
+import AuthContext from '../context/AuthContext'
+import { Redirect, useHistory } from 'react-router'
+import './Signup.css'
 
 const Signup = () => {
 
@@ -7,6 +10,14 @@ const Signup = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [passwordConfirm, setPasswordConfirm] = useState("")
+
+
+    const [errorStatus, setErrorStatus] = useState("")
+    const [errorMessage, setErrorMessage] = useState("")
+
+    const { loggedIn } = useContext(AuthContext)
+
+    const history = useHistory()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -18,41 +29,97 @@ const Signup = () => {
             passwordConfirm
         }
 
-        const response = await axios.post("/api/users/signup", signupData)
+        try {
+            await axios.post("/api/users/signup", signupData)
 
-        console.log(response)
+            history.push({
+                pathname: '/login'
+            })
+
+        } catch (err) {
+            console.log(err.response.data)
+            if (err.response.data.status === "fail") {
+                setErrorMessage(err.response.data.message)
+                setErrorStatus(err.response.data.status)
+            }
+        }
 
     }
 
     return (
-        <div>
-            <form onSubmit={ (e) => handleSubmit(e) } >
-                <input type="text" placeholder="enter username"
-                    value={ username }
-                    onChange={(e) => setUsername(e.target.value)}
-                />
+        <div className="center" >
 
-                <input type="email" placeholder="enter email"
-                    value={ email }
-                    onChange={(e) => setEmail(e.target.value)}
-                />
 
-                <input type="password" placeholder="enter password"
-                    value={ password }
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+            <h1>Signup</h1>
 
-                <input type="password" placeholder="verify password"
-                    value={ passwordConfirm }
-                    onChange={(e) => setPasswordConfirm(e.target.value)}
-                />
+            {
+                loggedIn ? <Redirect to="/dashboard" /> : null
+            }
+
+            {
+                errorMessage
+                    ? <div className="error-box" > <p className="error-text" > {errorMessage} </p> </div>
+                    : null
+            }
+
+
+            <form className="login-form" onSubmit={(e) => handleSubmit(e)} >
+
+                <div className="text-field" >
+
+                    <input type="text" placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                    <span></span>
+                    {/* <label>Email</label> */}
+                </div>
+
+                <div className="text-field" >
+
+                    <input type="email" placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <span></span>
+                    {/* <label>Email</label> */}
+                </div>
+
+                <div className="text-field" >
+                    <input type="password" placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <span></span>
+                    {/* <label>Password</label> */}
+                </div>
+
+                <div className="text-field" >
+                    <input type="password" placeholder="Confirm Password"
+                        value={passwordConfirm}
+                        onChange={(e) => setPasswordConfirm(e.target.value)}
+                    />
+                    <span></span>
+                    {/* <label>Password</label> */}
+                </div>
+
+                {/* <div className="pass">
+                    <p className="pass-text" >Forgot Password?</p>
+                </div> */}
 
                 <button
                     type="submit"
+                    className="signup-button"
                 >
-                    Submit
+                    Sign Up
                 </button>
+
+                {/* <div className="signup--link">
+                    Not a member? Sign Up
+                </div> */}
+
             </form>
+
         </div>
     )
 }
