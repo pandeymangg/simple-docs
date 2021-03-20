@@ -1,0 +1,13 @@
+.footer {
+    margin-top: 1.5rem;
+    background: #D9DBD6;
+    font-family: "Cutive", serif;
+}
+
+.footer-container {
+   margin: auto;
+   display: flex;
+   justify-content: space-between;
+   max-width: 1280px;
+   /* border: 1px solid #333; */
+}
