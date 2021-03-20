@@ -15,6 +15,7 @@ const Footer = () => {
                             <a href="https://github.com/anshuman9999" 
                             style={{ color: "#2691d9" }} 
                             target="_blank"
+                            rel="noreferrer"
                             > Anshuman Pandey</a>
                         </span>
                     </h3>

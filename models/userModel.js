@@ -12,10 +12,6 @@ const userSchema = new mongoose.Schema({
         required: [true, "email is a required field!"],
         unique: [true, "email already exists!"]
     },
-    notifications: {
-        type: Array,
-        default: []
-    },
     password: {
         type: String,
         minlength: [8, "password too short, must be atleast 8 characters long!"],
