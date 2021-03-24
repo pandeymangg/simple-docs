@@ -231,6 +231,23 @@ exports.isLoggedIn = async function (req, res) {
     }
 }
 
+exports.getUser = async function (req, res) {
+    try {
+        const user = await UserModel.findOne(req.body.id)
+
+        res.status(200).json({
+            status: "success",
+            username: user.username
+        })
+
+    } catch (err) {
+        res.status(400).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+}
+
 exports.getOwner = async function (req, res) {
     try {
         const doc = await DocModel.findById(req.params.docId)

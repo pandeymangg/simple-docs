@@ -16,7 +16,7 @@ import Footer from './components/Footer'
 
 function App() {
 
-  const { loggedIn } = useContext(AuthContext)
+  const { loggedIn, currentUser } = useContext(AuthContext)
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }} >

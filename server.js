@@ -4,12 +4,29 @@ const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const cookieParser = require('cookie-parser')
 const path = require('path')
+// const socketio = require('socket.io')
+// const http = require('http')
+// const server = http.createServer(app)
+// const io = socketio(server, {
+//     cors: {
+//         origin: "*"
+//     }
+// })
+
+// io.on('connection', (socket) => {
+//     //console.log("User connected")
+//     socket.on('new-operations', data => {
+//         //console.log(data)
+//         io.emit('new-remote-operations', data)
+//     })
+
+// })
 
 dotenv.config({ path: "./config.env" })
 
 const { getAllDocs, createNewDocument, getSingleDoc, updateDoc, deleteDoc, doesDocExist } = require('./controllers/docController')
 
-const { signup, login, protect, isOwnerOrCollaborator, isLoggedIn, logout, acceptRequest, isCollaborator, isOwner, createAccessNotification, getOwner, getNotifications, deleteNotification } = require('./controllers/authController')
+const { signup, login, protect, isOwnerOrCollaborator, isLoggedIn, logout, acceptRequest, isCollaborator, isOwner, createAccessNotification, getOwner, getNotifications, deleteNotification, getUser } = require('./controllers/authController')
 
 
 const DB = process.env.DB.replace(
@@ -45,6 +62,8 @@ app.post('/api/users/signup', signup)
 
 app.post('/api/users/login', login)
 
+app.get('/api/users/getUser', protect, getUser)
+
 app.get('/api/users/isLoggedIn', isLoggedIn)
 
 app.get('/api/users/logout', logout)
@@ -58,7 +77,7 @@ app.post('/api/users/:docId', protect, acceptRequest)
 app.delete('/api/notifications/:id', protect, deleteNotification)
 
 
-if(process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "production") {
     app.use(express.static('client/build'))
 
     app.get("*", (req, res) => {
@@ -68,7 +87,11 @@ if(process.env.NODE_ENV === "production") {
 }
 
 
-const port = process.env.PORT
+const port = process.env.PORT || 8000
 app.listen(port, () => {
     console.log(`server started at port: ${port}`)
 })
+
+// app.listen(port, () => {
+//     console.log(`server started at port: ${port}`)
+// })

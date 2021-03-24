@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { createEditor, Editor, Transforms, Element as SlateElement } from 'slate'
 import { Slate, Editable, withReact, useSlate } from 'slate-react'
 import Elements from './Elements'
@@ -8,6 +8,10 @@ import Button from './Buttons/Button'
 import axios from 'axios'
 import AuthContext from '../context/AuthContext'
 import { Redirect } from 'react-router'
+// import io from "socket.io-client";
+// import { v4 as uuidv4 } from 'uuid';
+
+//const socket = io("http://localhost:8000");
 
 const SlateEditor = (props) => {
 
@@ -21,55 +25,90 @@ const SlateEditor = (props) => {
 
   //const [docId, setDocId] = useState(props.location.state.docId)
   const [docId] = useState(idCopy)
+  //const [doc, setDoc] = useState()
   const [title, setTitle] = useState("")
   const [idStatus, setIdStatus] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
   const [errorStatus, setErrorStatus] = useState("")
+  const [collaborators, setCollaborators] = useState([])
 
   const editor = useMemo(() => withReact(createEditor()), [])
   const [value, setValue] = useState([])
 
-  const { loggedIn } = useContext(AuthContext)
+  const { loggedIn, currentUser } = useContext(AuthContext)
+  // const id = useRef(uuidv4())
+  // const remote = useRef(false)
 
   useEffect(() => {
     //const docId = props.location.state.docId
-
+    //let applyNewOps;
     if (loggedIn) {
       if (!idCopy) {
         setIdStatus("false")
       } else {
+        //console.log(currentUser)
         async function getSingleDoc() {
           try {
             const doc = await axios.get(`/api/docs/${docId}`)
 
             setValue(doc.data.data.doc.content)
             setTitle(doc.data.data.doc.name)
+
+            const collabs = doc.data.data.doc.collaborators
+            if(collabs) {
+              collabs.map(async collab => {
+                const response = await axios.get("/api/users/getUser", { id: collab })
+                //console.log(response.data.username)
+                setCollaborators(
+                  (prevState) => {
+                    return [...prevState, { id: collab, username: response.data.username }]
+                  }
+                )
+              })
+            }
+
+
           } catch (err) {
-            //console.log(err.response.data)
+            //console.log(err)
             setErrorStatus(err.response.status)
             setErrorMessage(err.response.data.message)
           }
         }
 
         getSingleDoc()
-      }
 
-      // async function getSingleDoc() {
-      //   try {
-      //     const doc = await axios.get(`/api/docs/${docId}`)
+        // if(currentUser) {
+        //   socket.emit('join-room', { docId, user: currentUser._id })
+        // }
+        //socket.emit('join-room', { docId: docId, user: currentUser })
 
-      //     setValue(doc.data.data.doc.content)
-      //     setTitle(doc.data.data.doc.name)
-      //   } catch (err) {
-      //     console.log(err.response.data)
-      //     setErrorStatus(err.response.status)
-      //     setErrorMessage(err.response.data.message)
-      //   }
-      // }
+    //     applyNewOps = ({ editorId, ops, documentId }) => {
+    //       //console.log(docId === documentId)
+    //       // console.log(editorId, id.current)
+    //       // console.log(editorId === id.current)
+    //       if (editorId !== id.current && docId === documentId) {
+    //         console.log("change happened in other")
+    //         remote.current = true
+    //         Editor.withoutNormalizing(editor, () => {
+    //           ops.forEach(op => {
+    //             editor.apply(op);
+    //           });
+    //         })
+    //         remote.current = false;
 
-      // getSingleDoc()
+    //       }
+    //     }
+
+    //     socket.on('new-remote-operations', applyNewOps)
+
+    //   }
+
     }
 
+    // return cleanUp => {
+    //   console.log("cleaning up...")
+    //   socket.off('new-remote-operations', applyNewOps)
+    }
 
   }, [docId])
 
@@ -101,6 +140,7 @@ const SlateEditor = (props) => {
         //console.log(updatedDoc)
       } catch (err) {
         //console.log(err.response.data)
+        //console.log(err)
         setErrorStatus(err.response.status)
         setErrorMessage(err.response.data.message)
       }
@@ -141,6 +181,25 @@ const SlateEditor = (props) => {
       <div className="doc-info" >
         <h3 className="doc-title" >Document Title: {title}</h3>
 
+        {
+          collaborators
+          ? (
+            <select>
+              <option> Collaborators </option>
+              {
+                collaborators.map((collaborator, index) => {
+                  return (
+                    <option key={ index } disabled >
+                      { collaborator.username }
+                    </option>
+                  )
+                })
+              }
+            </select>
+          )
+          : null
+        }
+
         <button onClick={saveDocHandler} className="save-button">
           <span className="material-icons" >
             save
@@ -149,7 +208,48 @@ const SlateEditor = (props) => {
 
       </div>
 
-      <Slate editor={editor} value={value} onChange={value => setValue(value)}>
+      <Slate editor={editor} value={value} onChange={
+        (value) => {
+          setValue(value)
+
+          // socket changes - for live editing...
+
+          // if (currentUser) {
+          //   const filterOperations = editor.operations.filter(operation => {
+
+          //     if (operation === null) {
+          //       return false
+          //     }
+
+          //     return (
+          //       (operation.type !== "set_selection") &&
+          //       (operation.type !== "set_value") &&
+          //       (!operation.data || !"source" in operation.data)
+          //     )
+          //   }).map(operation => {
+          //     return (
+          //       {
+          //         ...operation,
+          //         data: { source: "one" }
+          //       }
+          //     )
+          //   })
+
+          //   if (filterOperations.length && !remote.current) {
+          //     //emitter.emit(id.current, filterOperations)
+          //     //console.log(filterOperations)
+          //     socket.emit("new-operations", {
+          //       editorId: id.current,
+          //       ops: filterOperations,
+          //       documentId: docId
+          //     });
+
+          //   }
+          // }
+
+
+        }
+      }>
 
         <div className="toolbar" >
 
