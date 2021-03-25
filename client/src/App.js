@@ -13,6 +13,7 @@ import Navbar from './components/Navbar'
 import DeleteDoc from './DeleteDoc'
 import Signup from './components/Signup'
 import Footer from './components/Footer'
+import ManageDoc from './components/ManageDoc/ManageDoc'
 
 function App() {
 
@@ -22,7 +23,7 @@ function App() {
     <div style={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }} >
 
       <Navbar />
-      
+
       <div className="app-main" style={{ flex: '1 0 auto' }} >
         {
           (loggedIn === true || loggedIn === false) && <Route path="/" exact component={HomePage} />
@@ -72,6 +73,15 @@ function App() {
 
         {
           loggedIn === true && <Route path="/delete" component={DeleteDoc} />
+        }
+
+        {
+          (loggedIn === true || loggedIn === false)
+          && <Route
+            path="/manage"
+            exact
+            render={(props) => <ManageDoc {...props} />}
+          />
         }
 
       </div>

@@ -51,7 +51,7 @@ app.get('/api/docs/:id', protect, isOwnerOrCollaborator, getSingleDoc)
 
 app.post('/api/docs', protect, doesDocExist, createNewDocument)
 
-app.patch('/api/docs/:id', protect, isOwnerOrCollaborator, updateDoc)
+app.patch('/api/docs/:id', protect, isOwnerOrCollaborator, doesDocExist, updateDoc)
 
 app.delete('/api/docs/:id', protect, isOwner, deleteDoc)
 

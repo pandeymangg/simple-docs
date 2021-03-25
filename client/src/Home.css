@@ -131,6 +131,17 @@
     color: #6B645C;
 }
 
+.name-manage--div {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.manage-btn {
+    height: 30px;
+    margin-top: 20px;
+    margin-left: 10px;
+}
+
 .user-role--div{
     background-color: #7E8C8D;
     color: #eee;

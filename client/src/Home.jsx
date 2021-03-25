@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import './Home.css'
 import AuthContext from './context/AuthContext'
-//import { useHistory } from 'react-router'
+import { useHistory } from 'react-router'
 
 const Home = (props) => {
     const [title, setTitle] = useState("")
@@ -10,6 +10,8 @@ const Home = (props) => {
     const [errorMessage, setErrorMessage] = useState("")
 
     const { currentUser } = useContext(AuthContext)
+
+    const history = useHistory()
 
     const clickHandler = async () => {
         async function createNewDoc() {
@@ -86,6 +88,21 @@ const Home = (props) => {
         // })
     }
 
+    const manageDocumentHandler = (id, title, collaborators) => {
+        //const data = [id, title, collaborators]
+        //console.log(data)
+
+        history.push({
+            pathname: '/manage',
+            state: {
+                id,
+                title,
+                collaborators
+            }
+        })
+
+    }
+
     return (
         <>
             {/* <h1 className="heading-primary" >
@@ -160,12 +177,30 @@ const Home = (props) => {
                         return (
 
                             <div className="single-doc" key={doc._id} >
-                                <h3
-                                    className="heading-secondary doc-name"
-                                    onClick={id => viewDocHandler(doc._id)}
-                                >
-                                    {doc.name}
-                                </h3>
+                                <div className="name-manage--div" >
+                                    <h3
+                                        className="heading-secondary doc-name"
+                                        onClick={id => viewDocHandler(doc._id)}
+                                    >
+                                        {doc.name}
+                                    </h3>
+
+                                    {
+                                        doc.collaborators.includes(currentUser._id)
+                                            ? null
+                                            : <button 
+                                                onClick={ 
+                                                    (id) => manageDocumentHandler(
+                                                        doc._id
+                                                    )
+                                                } 
+                                                className="manage-btn"    
+                                                >
+                                                Manage
+                                            </button>
+                                    }
+                                </div>
+
                                 {
                                     doc.collaborators.includes(currentUser._id)
                                         ? <div className="user-role--div" >Collaborator</div>
