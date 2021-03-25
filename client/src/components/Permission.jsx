@@ -1,12 +1,16 @@
 import axios from "axios"
-import { useContext } from "react"
+import { useContext, useRef, useState } from "react"
 import { Redirect } from "react-router"
 import AuthContext from "../context/AuthContext"
 import './Permission.css'
+import { useHistory } from 'react-router-dom'
 
 const Permission = (props) => {
 
     const { loggedIn } = useContext(AuthContext)
+    const history = useHistory()
+    const buttonRef = useRef(null)
+    const [errorMessage, setErrorMessage] = useState("")
 
     //const [state, setState] = useState(props.location.state || "false")
 
@@ -18,10 +22,23 @@ const Permission = (props) => {
         //     senderId: currentUser._id
         // })
 
-        await axios.post(`/api/users/notifications/requestAccess`, {
-            docId,
-            //senderId: currentUser._id
-        })
+        try {
+            buttonRef.current.disabled = true
+            const response = await axios.post(`/api/users/notifications/requestAccess`, {
+                docId
+            })
+
+            if(response.data.status === "success") {
+                history.push({
+                    pathname: "/"
+                })
+                
+            }
+
+        } catch (err) {
+            //console.log(err)
+            setErrorMessage(err.response.data.message)
+        }
 
         //console.log(result.data)
 
@@ -32,9 +49,15 @@ const Permission = (props) => {
         <div className="main" >
 
             {
-                !loggedIn
-                ? <Redirect to='/login' />
+                errorMessage
+                ? <Redirect to={{ pathname: "/error", state: { message: errorMessage } }} />
                 : null
+            }
+
+            {
+                !loggedIn
+                    ? <Redirect to='/login' />
+                    : null
             }
 
             {
@@ -53,6 +76,7 @@ const Permission = (props) => {
                                     onClick={
                                         () => handleClick()
                                     }
+                                    ref={ buttonRef }
                                 >Send request</button>
                             </div>
 

@@ -60,7 +60,7 @@ const ManageDoc = (props) => {
                 inputRef.current.value = ""
                 setErrorMessage("")
             } catch (err) {
-                console.log(err.response)
+                //console.log(err.response)
                 setErrorMessage(err.response.data.message)
             }
         }
@@ -88,7 +88,8 @@ const ManageDoc = (props) => {
                 }
 
             } catch (err) {
-                console.log(err)
+                //console.log(err)
+                setErrorMessage(err.response.data.message)
             }
 
         }

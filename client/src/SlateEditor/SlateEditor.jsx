@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { createEditor, Editor, Transforms, Element as SlateElement } from 'slate'
 import { Slate, Editable, withReact, useSlate } from 'slate-react'
 import Elements from './Elements'
@@ -27,7 +27,6 @@ const SlateEditor = (props) => {
   const [idStatus, setIdStatus] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
   const [errorStatus, setErrorStatus] = useState("")
-  const [collaborators, setCollaborators] = useState([])
 
   const editor = useMemo(() => withReact(createEditor()), [])
   const [value, setValue] = useState([])
@@ -47,18 +46,6 @@ const SlateEditor = (props) => {
             setValue(doc.data.data.doc.content)
             setTitle(doc.data.data.doc.name)
 
-            // const collabs = doc.data.data.doc.collaborators
-            // if(collabs) {
-            //   collabs.map(async collab => {
-            //     const response = await axios.get(`/api/users/getUser/${collab}`)
-            //     //console.log(response.data.username)
-            //     setCollaborators(
-            //       (prevState) => {
-            //         return [...prevState, { id: collab, username: response.data.username }]
-            //       }
-            //     )
-            //   })
-            // }
 
 
           } catch (err) {

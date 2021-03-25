@@ -37,7 +37,7 @@ const Signup = () => {
             })
 
         } catch (err) {
-            console.log(err.response.data)
+            //console.log(err.response.data)
             if (err.response.data.status === "fail") {
                 setErrorMessage(err.response.data.message)
                 //setErrorStatus(err.response.data.status)

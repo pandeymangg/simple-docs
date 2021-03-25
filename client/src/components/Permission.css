@@ -41,6 +41,11 @@
     cursor: pointer;
 }
 
-.send-request-btn:hover {
+.send-request-btn:hover:enabled {
     transform: scale(1.1);
+}
+
+.send-request-btn:disabled {
+    cursor: default;
+    background: gray;
 }

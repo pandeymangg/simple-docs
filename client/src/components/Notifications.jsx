@@ -10,6 +10,7 @@ const Notifications = () => {
     const [loading, setLoading] = useState(true)
     const [notificationsArray, setNotificationsArray] = useState([])
     const [btnDis, setBtnDis] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("")
 
     async function getNotifications() {
         try {
@@ -22,6 +23,7 @@ const Notifications = () => {
 
         } catch (err) {
             //console.log(err)
+            setErrorMessage(err.response.data.message)
         }
     }
 
@@ -45,11 +47,13 @@ const Notifications = () => {
                     const response = await axios.delete(`/api/notifications/${notificationId}`)
                     if (response.data.status === "success") {
                         getNotifications()
+                        setBtnDis(false)
                     }
                 }
 
             } catch (err) {
-                console.log(err)
+                //console.log(err.response.data)
+                setErrorMessage(err.response.data.message)
             }
 
 
@@ -79,6 +83,12 @@ const Notifications = () => {
                 loading === true ? <div className="medium progress" ><div>Loading...</div></div>
                     : (
                         <div className="notifications-container" >
+
+                            {
+                                errorMessage
+                                ? <Redirect to={{ pathname: "/error", state: { message: errorMessage } }} />
+                                : null
+                            }
 
                             {
                                 !loggedIn

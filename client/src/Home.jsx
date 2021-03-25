@@ -31,7 +31,7 @@ const Home = (props) => {
                 const docId = newDoc.data.data.doc._id
                 return docId
             } catch (err) {
-                console.log(err.response)
+                //console.log(err.response)
                 setErrorMessage(err.response.data.message)
             }
         }

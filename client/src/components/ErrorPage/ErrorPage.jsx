@@ -10,6 +10,9 @@ const ErrorPage = (props) => {
         if(state.message === "Cannot read property 'owner' of null") {
             errorMessage = "The owner has most likely deleted this document!"
         }
+        if(state.message === "you are already a collaborator!") {
+            errorMessage = "The user requesting access is already an owner!"
+        }
     }
 
     return (
