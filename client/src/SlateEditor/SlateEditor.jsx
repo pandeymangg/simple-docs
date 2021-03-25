@@ -8,10 +8,7 @@ import Button from './Buttons/Button'
 import axios from 'axios'
 import AuthContext from '../context/AuthContext'
 import { Redirect } from 'react-router'
-// import io from "socket.io-client";
-// import { v4 as uuidv4 } from 'uuid';
 
-//const socket = io("http://localhost:8000");
 
 const SlateEditor = (props) => {
 
