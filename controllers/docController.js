@@ -119,6 +119,27 @@ exports.getSingleDoc = async function (req, res) {
     }
 }
 
+exports.getSingleDocPopulated = async function (req, res) {
+    try {
+        const doc = await DocModel.findById(req.params.id).populate({
+            path: "collaborators",
+            select: "username"
+        })
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                doc
+            }
+        })
+    } catch (err) {
+        res.status(400).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+}
+
 exports.updateDoc = async function (req, res) {
     try {
         const updatedDoc = await DocModel.findByIdAndUpdate(req.params.id, req.body, {

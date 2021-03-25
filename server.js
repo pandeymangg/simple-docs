@@ -7,7 +7,7 @@ const path = require('path')
 
 dotenv.config({ path: "./config.env" })
 
-const { getAllDocs, createNewDocument, getSingleDoc, updateDoc, deleteDoc, doesDocExist } = require('./controllers/docController')
+const { getAllDocs, createNewDocument, getSingleDoc, updateDoc, deleteDoc, doesDocExist, getSingleDocPopulated } = require('./controllers/docController')
 
 const { signup, login, protect, isOwnerOrCollaborator, isLoggedIn, logout, acceptRequest, isCollaborator, isOwner, createAccessNotification, getOwner, getNotifications, deleteNotification, getUser, removeCollaborator } = require('./controllers/authController')
 
@@ -31,6 +31,8 @@ app.use(express.json())
 app.get('/api/docs', protect, getAllDocs)
 
 app.get('/api/docs/:id', protect, isOwnerOrCollaborator, getSingleDoc)
+
+app.get('/api/docs/populated/:id', protect, isOwner, getSingleDocPopulated)
 
 app.post('/api/docs', protect, doesDocExist, createNewDocument)
 

@@ -50,3 +50,13 @@
     border: 1px solid #333;
     cursor: pointer;
 }
+
+.decline-btn:disabled {
+    cursor: default;
+    background: gray;
+}
+
+.accept-btn:disabled {
+    cursor: default;
+    background: gray;
+}

@@ -331,6 +331,7 @@ exports.removeCollaborator = async function (req, res) {
         }
 
         let collaboratorsArray = [...doc.collaborators]
+        
         //console.log(collaboratorsArray)
         //const index = collaboratorsArray.indexOf(req.body.collabId)
         const index = collaboratorsArray.findIndex(id => id.equals(req.body.collabId))

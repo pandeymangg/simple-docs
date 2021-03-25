@@ -47,18 +47,18 @@ const SlateEditor = (props) => {
             setValue(doc.data.data.doc.content)
             setTitle(doc.data.data.doc.name)
 
-            const collabs = doc.data.data.doc.collaborators
-            if(collabs) {
-              collabs.map(async collab => {
-                const response = await axios.get(`/api/users/getUser/${collab}`)
-                //console.log(response.data.username)
-                setCollaborators(
-                  (prevState) => {
-                    return [...prevState, { id: collab, username: response.data.username }]
-                  }
-                )
-              })
-            }
+            // const collabs = doc.data.data.doc.collaborators
+            // if(collabs) {
+            //   collabs.map(async collab => {
+            //     const response = await axios.get(`/api/users/getUser/${collab}`)
+            //     //console.log(response.data.username)
+            //     setCollaborators(
+            //       (prevState) => {
+            //         return [...prevState, { id: collab, username: response.data.username }]
+            //       }
+            //     )
+            //   })
+            // }
 
 
           } catch (err) {
@@ -144,7 +144,7 @@ const SlateEditor = (props) => {
       <div className="doc-info" >
         <h3 className="doc-title" >Document Title: {title}</h3>
 
-        {
+        {/* {
           collaborators
           ? (
             <select>
@@ -161,7 +161,7 @@ const SlateEditor = (props) => {
             </select>
           )
           : null
-        }
+        } */}
 
         <button onClick={saveDocHandler} className="save-button">
           <span className="material-icons" >

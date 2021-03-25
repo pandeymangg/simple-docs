@@ -8,36 +8,40 @@ const ManageDoc = (props) => {
     const [title, setTitle] = useState("")
     const [errorMessage, setErrorMessage] = useState("")
     const [collaborators, setCollaborators] = useState([])
+    const [loading, setLoading] = useState(true)
 
-    const getCollaborators = async function (collabs) {
-        if (collabs) {
-            collabs.map(async collab => {
-                //console.log(collab)
-                const response = await axios.get(`/api/users/getUser/${collab}`)
-                //console.log(response.data.username)
-                //console.log(response)
-                setCollaborators(
-                    (prevState) => {
-                        return [...prevState, { id: collab, username: response.data.username }]
-                    }
-                )
-            })
-        } else {
-            setCollaborators([])
-        }
+    async function getInitialStates() {
+        const response = await axios.get(`/api/docs/populated/${state.id}`)
+
+        //console.log(response.data.data.doc.name)
+        //console.log(response.data.data.doc)
+        //const collabs = response.data.data.doc.collaborators
+
+        setTitle(response.data.data.doc.name)
+        setCollaborators(response.data.data.doc.collaborators)
+
+        //let usersArray = []
+        // collabs.map(
+        //     async collabId => {
+        //         const response = await axios.get(
+        //             `/api/users/getUser/${collabId}`
+        //         )
+        //         //console.log(response.data.username)
+        //         //usersArray.push({ id: collabId, username: response.data.username })
+        //         setCollaborators(
+        //             (prevState) => {
+        //                 return [...prevState, { id: collabId, username: response.data.username }]
+        //             }
+        //         )
+
+        //     }
+        // )
+
+        setLoading(false)
     }
 
     useEffect(() => {
-        async function getDoc() {
-            const response = await axios.get(`/api/docs/${state.id}`)
-
-            //console.log(response.data.data.doc.name)
-            setTitle(response.data.data.doc.name)
-            const collabs = response.data.data.doc.collaborators
-            getCollaborators(collabs)
-        }
-
-        getDoc()
+        getInitialStates()
     }, [])
 
     const inputRef = useRef(null)
@@ -64,72 +68,93 @@ const ManageDoc = (props) => {
         updateName()
     }
 
-    const removeCollaborator = (collaborator) => {
-        async function remove() {
-            //console.log(collaborator)
-            const response = await axios.patch(`/api/docs/${state.id}/removeCollaborator`, {
-                collabId: collaborator.id
-            })
-            //console.log(response.data)
+    const removeCollab = (collaborator) => {
+        async function removeInner() {
 
-            setCollaborators(response.data.doc.collaborators)
+            try {
+                //console.log(collaborator)
+                const response = await axios.patch(
+                    `/api/docs/${state.id}/removeCollaborator`,
+                    { collabId: collaborator._id }
+                )
+                
+                //console.log(response.data)
+                if(response.data.status === "success") {
+                    setCollaborators(
+                        (prevState) => {
+                            return prevState.filter(ele => ele._id !== collaborator._id)
+                        }
+                    )
+                }
+
+            } catch (err) {
+                console.log(err)
+            }
 
         }
 
-        remove()
+        removeInner()
+
     }
 
-
     return (
-        <div className="container" >
-            <h2>{title}</h2>
 
+        <>
             {
-                errorMessage
-                    ? (<div>
-                        {errorMessage}
-                    </div>)
-                    : null
-            }
+                loading === true ? <div className="medium progress"><div>Loading…</div></div>
+                    : (
+                        <div className="container" >
 
-            <form
-                onSubmit={
-                    (e) => {
-                        e.preventDefault()
-                        updateNameHandler(inputTerm)
-                    }
-                }
-            >
-                <input type="text" placeholder="enter new name" ref={inputRef}
-                    onChange={(e) => setInputTerm(e.target.value)}
-                />
-                <button type="submit" disabled={!inputTerm} >Update</button>
-            </form>
+                            <h2>{title}</h2>
 
-            {
-                collaborators
-                    ? (
-                        <div>
                             {
-                                collaborators.map((collaborator, index) => {
-                                    return (
-                                        <div key={index} >
-                                            {collaborator.username}
-                                            <button
-                                                onClick={
-                                                    () => removeCollaborator(collaborator)
-                                                }
-                                            >Remove</button>
-                                        </div>
-                                    )
-                                })
+                                errorMessage
+                                    ? (<div>
+                                        {errorMessage}
+                                    </div>)
+                                    : null
                             }
+
+                            <form
+                                onSubmit={
+                                    (e) => {
+                                        e.preventDefault()
+                                        updateNameHandler(inputTerm)
+                                    }
+                                }
+                            >
+                                <input type="text" placeholder="enter new name" ref={inputRef}
+                                    onChange={(e) => setInputTerm(e.target.value)}
+                                />
+                                <button type="submit" disabled={!inputTerm} >Update</button>
+                            </form>
+
+                            <div>
+                                {
+                                    collaborators.map(
+                                        (collaborator, index) => {
+                                            return (
+                                                <div key={index} >
+                                                    {collaborator.username}
+                                                    <button
+                                                        onClick={
+                                                            () => {
+                                                                removeCollab(collaborator)
+                                                            }
+                                                        }
+                                                    >Remove</button>
+                                                </div>
+                                            )
+                                        }
+                                    )
+                                }
+                            </div>
+
                         </div>
                     )
-                    : null
             }
+        </>
 
-        </div>
     )
 }
 
