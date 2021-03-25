@@ -4,29 +4,12 @@ const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const cookieParser = require('cookie-parser')
 const path = require('path')
-// const socketio = require('socket.io')
-// const http = require('http')
-// const server = http.createServer(app)
-// const io = socketio(server, {
-//     cors: {
-//         origin: "*"
-//     }
-// })
-
-// io.on('connection', (socket) => {
-//     //console.log("User connected")
-//     socket.on('new-operations', data => {
-//         //console.log(data)
-//         io.emit('new-remote-operations', data)
-//     })
-
-// })
 
 dotenv.config({ path: "./config.env" })
 
 const { getAllDocs, createNewDocument, getSingleDoc, updateDoc, deleteDoc, doesDocExist } = require('./controllers/docController')
 
-const { signup, login, protect, isOwnerOrCollaborator, isLoggedIn, logout, acceptRequest, isCollaborator, isOwner, createAccessNotification, getOwner, getNotifications, deleteNotification, getUser } = require('./controllers/authController')
+const { signup, login, protect, isOwnerOrCollaborator, isLoggedIn, logout, acceptRequest, isCollaborator, isOwner, createAccessNotification, getOwner, getNotifications, deleteNotification, getUser, removeCollaborator } = require('./controllers/authController')
 
 
 const DB = process.env.DB.replace(
@@ -53,6 +36,8 @@ app.post('/api/docs', protect, doesDocExist, createNewDocument)
 
 app.patch('/api/docs/:id', protect, isOwnerOrCollaborator, doesDocExist, updateDoc)
 
+app.patch('/api/docs/:id/removeCollaborator', protect, isOwner, removeCollaborator)
+
 app.delete('/api/docs/:id', protect, isOwner, deleteDoc)
 
 app.get('/api/docs/getOwner/:docId', protect, getOwner)
@@ -62,7 +47,7 @@ app.post('/api/users/signup', signup)
 
 app.post('/api/users/login', login)
 
-app.get('/api/users/getUser', protect, getUser)
+app.get('/api/users/getUser/:id', protect, getUser)
 
 app.get('/api/users/isLoggedIn', isLoggedIn)
 

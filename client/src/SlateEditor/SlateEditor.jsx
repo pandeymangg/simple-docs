@@ -32,13 +32,9 @@ const SlateEditor = (props) => {
   const editor = useMemo(() => withReact(createEditor()), [])
   const [value, setValue] = useState([])
 
-  const { loggedIn, currentUser } = useContext(AuthContext)
-  // const id = useRef(uuidv4())
-  // const remote = useRef(false)
-
+  const { loggedIn } = useContext(AuthContext)
+  
   useEffect(() => {
-    //const docId = props.location.state.docId
-    //let applyNewOps;
     if (loggedIn) {
       if (!idCopy) {
         setIdStatus("false")
@@ -54,7 +50,7 @@ const SlateEditor = (props) => {
             const collabs = doc.data.data.doc.collaborators
             if(collabs) {
               collabs.map(async collab => {
-                const response = await axios.get("/api/users/getUser", { id: collab })
+                const response = await axios.get(`/api/users/getUser/${collab}`)
                 //console.log(response.data.username)
                 setCollaborators(
                   (prevState) => {
@@ -74,37 +70,7 @@ const SlateEditor = (props) => {
 
         getSingleDoc()
 
-        // if(currentUser) {
-        //   socket.emit('join-room', { docId, user: currentUser._id })
-        // }
-        //socket.emit('join-room', { docId: docId, user: currentUser })
-
-    //     applyNewOps = ({ editorId, ops, documentId }) => {
-    //       //console.log(docId === documentId)
-    //       // console.log(editorId, id.current)
-    //       // console.log(editorId === id.current)
-    //       if (editorId !== id.current && docId === documentId) {
-    //         console.log("change happened in other")
-    //         remote.current = true
-    //         Editor.withoutNormalizing(editor, () => {
-    //           ops.forEach(op => {
-    //             editor.apply(op);
-    //           });
-    //         })
-    //         remote.current = false;
-
-    //       }
-    //     }
-
-    //     socket.on('new-remote-operations', applyNewOps)
-
-    //   }
-
-    }
-
-    // return cleanUp => {
-    //   console.log("cleaning up...")
-    //   socket.off('new-remote-operations', applyNewOps)
+      }
     }
 
   }, [docId])
@@ -208,43 +174,6 @@ const SlateEditor = (props) => {
       <Slate editor={editor} value={value} onChange={
         (value) => {
           setValue(value)
-
-          // socket changes - for live editing...
-
-          // if (currentUser) {
-          //   const filterOperations = editor.operations.filter(operation => {
-
-          //     if (operation === null) {
-          //       return false
-          //     }
-
-          //     return (
-          //       (operation.type !== "set_selection") &&
-          //       (operation.type !== "set_value") &&
-          //       (!operation.data || !"source" in operation.data)
-          //     )
-          //   }).map(operation => {
-          //     return (
-          //       {
-          //         ...operation,
-          //         data: { source: "one" }
-          //       }
-          //     )
-          //   })
-
-          //   if (filterOperations.length && !remote.current) {
-          //     //emitter.emit(id.current, filterOperations)
-          //     //console.log(filterOperations)
-          //     socket.emit("new-operations", {
-          //       editorId: id.current,
-          //       ops: filterOperations,
-          //       documentId: docId
-          //     });
-
-          //   }
-          // }
-
-
         }
       }>
 

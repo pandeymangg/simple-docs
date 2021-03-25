@@ -233,7 +233,8 @@ exports.isLoggedIn = async function (req, res) {
 
 exports.getUser = async function (req, res) {
     try {
-        const user = await UserModel.findOne(req.body.id)
+        //console.log(req.body)
+        const user = await UserModel.findById(req.params.id)
 
         res.status(200).json({
             status: "success",
@@ -272,7 +273,7 @@ exports.isOwner = async function (req, res, next) {
         if (!req.user._id.equals(doc.owner)) {
             res.status(400).json({
                 status: "fail",
-                message: "You are not authorised to delete this document!"
+                message: "You are not authorised to perform this action!"
             })
 
             return
@@ -302,6 +303,61 @@ exports.isOwnerOrCollaborator = async function (req, res, next) {
 
         next()
     } catch (err) {
+        res.status(400).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+}
+
+exports.removeCollaborator = async function (req, res) {
+    try {
+        const doc = await DocModel.findById(req.params.id)
+
+        if(!doc) {
+            res.status(400).json({
+                status: "fail",
+                message: "no such document exists"
+            })
+            return
+        }
+
+        if(!doc.collaborators) {
+            res.status(400).json({
+                status: "fail",
+                message: "This document does not have any collaborators!"
+            })
+            return
+        }
+
+        let collaboratorsArray = [...doc.collaborators]
+        //console.log(collaboratorsArray)
+        //const index = collaboratorsArray.indexOf(req.body.collabId)
+        const index = collaboratorsArray.findIndex(id => id.equals(req.body.collabId))
+
+        //console.log(index)
+
+        if(index === -1)  {
+            res.status(400).json({
+                status: "fail",
+                message: "this user is not a collaborator"
+            })
+            return
+        }
+
+        collaboratorsArray.splice(index, 1)
+
+        const updatedDoc = await DocModel.findByIdAndUpdate(req.params.id, {
+            collaborators: collaboratorsArray
+        }, { new: true })
+
+        res.status(200).json({
+            status: "success",
+            doc: updatedDoc
+        })
+
+
+    } catch(err) {
         res.status(400).json({
             status: "fail",
             message: err.message
