@@ -202,18 +202,20 @@ const Home = (props) => {
                                                 </h3>
 
                                                 {
-                                                    doc.collaborators.includes(currentUser._id)
-                                                        ? null
-                                                        : <button
-                                                            onClick={
-                                                                (id) => manageDocumentHandler(
-                                                                    doc._id
-                                                                )
-                                                            }
-                                                            className="manage-btn"
-                                                        >
-                                                            Manage
-                                                        </button>
+                                                    // doc.collaborators.includes(currentUser._id)
+                                                    doc.owner === currentUser._id
+                                                        ? ( <span
+                                                                onClick={
+                                                                    (id) => manageDocumentHandler(
+                                                                        doc._id
+                                                                    )
+                                                                }
+                                                                className="material-icons manage-btn"
+                                                            >
+                                                                settings
+                                                            </span>
+                                                        )
+                                                        : null
                                                 }
                                             </div>
 

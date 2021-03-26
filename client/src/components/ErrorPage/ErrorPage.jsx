@@ -13,6 +13,9 @@ const ErrorPage = (props) => {
         if(state.message === "you are already a collaborator!") {
             errorMessage = "The user requesting access is already an owner!"
         }
+        else {
+            errorMessage = state.message
+        }
     }
 
     return (

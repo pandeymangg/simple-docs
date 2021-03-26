@@ -1,0 +1,25 @@
+.mt-50 {
+    margin-top: 50px;
+}
+
+.username-div {
+    width: 150px;
+}
+
+.collaborators-div {
+    position: relative;
+    width: 40%;
+    height: 40px;
+    font-family: Cutive, serif;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.remove-btn {
+    cursor: pointer;
+}
+
+.remove-btn:hover {
+    color: #D9262F;
+}

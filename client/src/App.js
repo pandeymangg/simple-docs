@@ -76,7 +76,7 @@ function App() {
         }
 
         {
-          (loggedIn === true || loggedIn === false)
+          (loggedIn === true)
           && <Route
             path="/manage"
             exact

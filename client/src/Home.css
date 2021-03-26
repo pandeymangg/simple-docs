@@ -124,7 +124,7 @@
 
 .doc-name {
     cursor: pointer;
-    width: 100px;
+    width: 150px;   
 }
 
 .doc-name:hover {
@@ -140,6 +140,11 @@
     height: 30px;
     margin-top: 20px;
     margin-left: 10px;
+}
+
+.manage-btn:hover {
+    cursor: pointer;
+    color: gray;
 }
 
 .user-role--div {
