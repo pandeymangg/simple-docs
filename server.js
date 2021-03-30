@@ -4,13 +4,18 @@ const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const cookieParser = require('cookie-parser')
 const path = require('path')
+const cors = require('cors')
+
+app.use(cors({
+    origin: "https://simple-docs.herokuapp.com"
+}))
 
 const socketio = require('socket.io')
 const http = require('http')
 const server = http.createServer(app)
 const io = socketio(server, {
     cors: {
-        origin: "*"
+        origin: "https://simple-docs.herokuapp.com"
     }
 })
 
