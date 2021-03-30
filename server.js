@@ -8,11 +8,7 @@ const path = require('path')
 const socketio = require('socket.io')
 const http = require('http')
 const server = http.createServer(app)
-const io = socketio(server, {
-    cors: {
-        origin: "*"
-    }
-})
+const io = socketio(server)
 
 io.on('connection', (socket) => {
     //console.log("User Connected...")
