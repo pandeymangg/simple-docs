@@ -9,6 +9,7 @@ const LogoutButton = () => {
     async function logout() {
         await axios.get('/api/users/logout')
         getLoggedInState()
+        window.location.reload()
     }
 
     return (
@@ -29,6 +30,25 @@ const LogoutButton = () => {
             >
                 Log Out
             </button>
+
+            {/* <a
+                onClick={logout}
+                href="/login"
+                style={{
+                    padding: '10px',
+                    width: "100px",
+                    backgroundColor: 'teal',
+                    border: 'none',
+                    outline: 'none',
+                    cursor: "pointer",
+                    color: '#eee',
+                    borderRadius: "15px",
+                    fontFamily: "Cutive, serif"
+                }}
+            >
+                Log Out
+            </a> */}
+
         </div>
     )
 }

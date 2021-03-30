@@ -3,6 +3,7 @@ import { useEffect, useState, useContext, useRef } from "react"
 import { Redirect } from "react-router"
 import AuthContext from "../context/AuthContext"
 import './Notifications.css'
+import { useHistory } from 'react-router-dom'
 
 const Notifications = () => {
 
@@ -12,19 +13,41 @@ const Notifications = () => {
     const [btnDis, setBtnDis] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
 
-    async function getNotifications() {
-        try {
-            const response = await axios.get('/api/users/notifications')
-            //console.log(response.data)
-            setNotificationsArray(response.data.notifications)
-            setLoading(false)
-            //buttonRef.current.disabled = true
-            //setBtnDis(true)
+    const history = useHistory()
 
-        } catch (err) {
-            //console.log(err)
-            setErrorMessage(err.response.data.message)
+    async function getNotifications() {
+
+        if (loggedIn) {
+            try {
+                const response = await axios.get('/api/users/notifications')
+                //console.log(response.data)
+                setNotificationsArray(response.data.notifications)
+                setLoading(false)
+                //buttonRef.current.disabled = true
+                //setBtnDis(true)
+
+            } catch (err) {
+                //console.log(err)
+                setErrorMessage(err.response.data.message)
+            }
+        } else {
+            history.push({
+                pathname: "/login"
+            })
         }
+
+        // try {
+        //     const response = await axios.get('/api/users/notifications')
+        //     //console.log(response.data)
+        //     setNotificationsArray(response.data.notifications)
+        //     setLoading(false)
+        //     //buttonRef.current.disabled = true
+        //     //setBtnDis(true)
+
+        // } catch (err) {
+        //     //console.log(err)
+        //     setErrorMessage(err.response.data.message)
+        // }
     }
 
     useEffect(() => {
@@ -86,8 +109,8 @@ const Notifications = () => {
 
                             {
                                 errorMessage
-                                ? <Redirect to={{ pathname: "/error", state: { message: errorMessage } }} />
-                                : null
+                                    ? <Redirect to={{ pathname: "/error", state: { message: errorMessage } }} />
+                                    : null
                             }
 
                             {
@@ -117,8 +140,8 @@ const Notifications = () => {
                                                                 }
                                                             }
                                                             className="accept-btn"
-                                                            disabled={ btnDis }
-                                                            
+                                                            disabled={btnDis}
+
                                                         >Accept</button>
 
                                                         <button
@@ -126,7 +149,7 @@ const Notifications = () => {
                                                                 () => declineHandler(notification._id)
                                                             }
                                                             className="decline-btn"
-                                                            disabled={ btnDis }
+                                                            disabled={btnDis}
                                                         >Decline</button>
 
                                                     </div>

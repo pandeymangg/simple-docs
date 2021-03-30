@@ -5,6 +5,23 @@ const dotenv = require('dotenv')
 const cookieParser = require('cookie-parser')
 const path = require('path')
 
+const socketio = require('socket.io')
+const http = require('http')
+const server = http.createServer(app)
+const io = socketio(server, {
+    cors: {
+        origin: "http://localhost:3000",
+    }
+})
+
+io.on('connection', (socket) => {
+    //console.log("User Connected...")
+
+    socket.on("notification-sent", (data) => {
+        io.emit("notification-received", data)
+    })
+})
+
 dotenv.config({ path: "./config.env" })
 
 const { getAllDocs, createNewDocument, getSingleDoc, updateDoc, deleteDoc, doesDocExist, getSingleDocPopulated } = require('./controllers/docController')
@@ -74,11 +91,12 @@ if (process.env.NODE_ENV === "production") {
 }
 
 
-const port = process.env.PORT || 8000
-app.listen(port, () => {
-    console.log(`server started at port: ${port}`)
-})
-
+// const port = process.env.PORT || 8000
 // app.listen(port, () => {
 //     console.log(`server started at port: ${port}`)
 // })
+
+const port = process.env.PORT || 8000
+server.listen(port, () => {
+    console.log(`server started at port: ${port}`)
+})
