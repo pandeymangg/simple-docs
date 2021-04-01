@@ -42,3 +42,19 @@ a {
     padding: 10px;
     margin: 0 5px;
 }
+
+.notification {
+    position: relative;
+    margin: 0 10px;
+}
+
+.notification .badge {
+    transform: scale(0.6);
+    position: absolute;
+    top: -20px;
+    right: -12px;
+    padding: 5px 10px;
+    border-radius: 50%;
+    background: red;
+    color: white;
+}

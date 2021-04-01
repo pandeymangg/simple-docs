@@ -1,9 +1,12 @@
 import axios from "axios"
-import { useEffect, useState, useContext, useRef } from "react"
+import { useEffect, useState, useContext } from "react"
 import { Redirect } from "react-router"
 import AuthContext from "../context/AuthContext"
 import './Notifications.css'
 import { useHistory } from 'react-router-dom'
+import io from "socket.io-client"
+
+const socket = io()
 
 const Notifications = () => {
 
@@ -15,8 +18,28 @@ const Notifications = () => {
 
     const history = useHistory()
 
-    async function getNotifications() {
+    // const socketFunc = (data) => {
+    //     if (currentUser._id === data.notification.reciever) {
+    //         //setTimeout(getNotifications)
+    //         getNotifications()
+    //     }
+    // }
 
+    // const socketTest = () => {
+
+    //     //console.log("loggedIn")
+    //     socket.on('notification-received', socketFunc)
+
+    // }
+
+    // useEffect(() => {
+    //     if (loggedIn === true && currentUser) {
+    //         socketTest()
+    //     }
+    // })
+
+    async function getNotifications() {
+ 
         if (loggedIn) {
             try {
                 const response = await axios.get('/api/users/notifications')
@@ -71,6 +94,9 @@ const Notifications = () => {
                     if (response.data.status === "success") {
                         getNotifications()
                         setBtnDis(false)
+
+                        socket.emit("notification-deleted-sent", { status: "success" })
+                        
                     }
                 }
 
@@ -92,6 +118,7 @@ const Notifications = () => {
 
             if (response.data.status === "success") {
                 getNotifications()
+                socket.emit("notification-deleted-sent", { status: "success" })
             }
 
         }

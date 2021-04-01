@@ -189,10 +189,10 @@ const Home = (props) => {
                             </div>
 
                             {
-                                docs.map(doc => {
+                                docs.map((doc, index) => {
                                     return (
 
-                                        <div className="single-doc" key={doc._id} >
+                                        <div className="single-doc" key={index} >
                                             <div className="name-manage--div" >
                                                 <h3
                                                     className="heading-secondary doc-name"

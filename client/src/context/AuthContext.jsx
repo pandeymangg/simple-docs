@@ -20,7 +20,7 @@ const AuthContextProvider = (props) => {
     const socketFunc = (data) => {
         if (currentUser._id === data.notification.reciever && loggedIn === true) {
             toast.info(data.notification.notification, {
-                position: toast.POSITION.TOP_RIGHT,
+                position: toast.POSITION.TOP_LEFT,
                 autoClose: 5000
             })
         }

@@ -17,7 +17,7 @@ import ManageDoc from './components/ManageDoc/ManageDoc'
 
 function App() {
 
-  const { loggedIn, currentUser } = useContext(AuthContext)
+  const { loggedIn } = useContext(AuthContext)
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }} >

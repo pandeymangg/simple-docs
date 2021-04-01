@@ -16,6 +16,11 @@ io.on('connection', (socket) => {
     socket.on("notification-sent", (data) => {
         io.emit("notification-received", data)
     })
+
+    socket.on("notification-deleted-sent", (data) => {
+        io.emit("notification-deleted-recieved", data)
+    })
+
 })
 
 dotenv.config({ path: "./config.env" })

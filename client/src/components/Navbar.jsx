@@ -1,17 +1,66 @@
-import React, { useContext } from 'react'
+import axios from 'axios'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import AuthContext from '../context/AuthContext'
 import LogoutButton from './LogoutButton'
 import './Navbar.css'
+import { io } from 'socket.io-client'
+
+const socket = io()
 
 const Navbar = () => {
     const { loggedIn, currentUser } = useContext(AuthContext)
+
+    const [notificationsArrayLength, setNotificationsArrayLength] = useState([])
+
+    async function getNotificationsLength() {
+        try {
+            const response = await axios.get('/api/users/notifications')
+            setNotificationsArrayLength(response.data.notifications.length)
+
+        } catch (err) {
+            console.log(err.response)
+            //setErrorMessage(err.response.data.message)
+        }
+    }
 
     let username
 
     if (currentUser) {
         username = <li>{currentUser.username}</li>
     }
+
+    useEffect(() => {
+        if(loggedIn === true) {
+            getNotificationsLength()
+        }
+    })
+
+
+    const socketFunc = (data) => {
+        if (currentUser._id === data.notification.reciever) {
+            //setTimeout(getNotifications)
+            getNotificationsLength()
+        }
+    }
+
+    const socketTest = () => {
+        socket.on('notification-received', socketFunc)
+    }
+
+    useEffect(() => {
+        if (loggedIn === true && currentUser) {
+            socketTest()
+
+            socket.on("notification-deleted-recieved", (data) => {
+                if (data.status === "success") {
+                    getNotificationsLength()
+                }
+            })
+
+        }
+
+    })
 
     return (
         <header>
@@ -50,7 +99,29 @@ const Navbar = () => {
                             }
 
                             {
-                                loggedIn === true ? <li><Link to="/notifications">Notifications</Link></li> : null
+                                loggedIn === true ? (
+                                    <div style={
+                                        { display: "flex" }
+                                    } >
+                                        <li>
+                                            <Link to="/notifications" className="notification" >
+
+                                                <span className="material-icons">
+                                                    notifications
+                                                </span>
+
+
+                                                {
+                                                    notificationsArrayLength > 0
+                                                        ?<span className="badge">{notificationsArrayLength}</span>
+                                                        : null
+                                                }
+
+                                            </Link>
+                                        </li>
+
+                                    </div>
+                                ) : null
                             }
 
                             {

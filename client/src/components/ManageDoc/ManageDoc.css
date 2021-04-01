@@ -23,3 +23,7 @@
 .remove-btn:hover {
     color: #D9262F;
 }
+
+.doc-title-new:hover {
+    color: gray;
+}

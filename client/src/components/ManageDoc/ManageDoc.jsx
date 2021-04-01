@@ -50,6 +50,16 @@ const ManageDoc = (props) => {
 
     const inputRef = useRef(null)
 
+    const viewDocHandler = (id) => {
+        const idString = `id=${id}`
+
+        props.history.push({
+            pathname: '/view',
+            search: idString,
+            //state: { docId: id }
+        })
+    }
+
     const updateNameHandler = (inputTerm) => {
         async function updateName() {
             try {
@@ -141,7 +151,10 @@ const ManageDoc = (props) => {
                                                     }
                                                 >
                                                     <div style={{ display: "flex" }} >
-                                                        <label className="doc-title" > {title} </label>
+                                                        <label className="doc-title doc-title-new" 
+                                                            style={{ cursor: "pointer" }}
+                                                            onClick={ () => viewDocHandler(id) }
+                                                        > {title} </label>
 
                                                         {/* {
                                 errorMessage !== "" && <div className="error-box-home" > <p className="error-text-home" > {errorMessage} </p> </div>
