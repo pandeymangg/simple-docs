@@ -125,22 +125,14 @@
 
 .doc-name {
     cursor: pointer;
-    width: 150px;   
 }
 
 .doc-name:hover {
     color: #6B645C;
 }
 
-.name-manage--div {
-    display: flex;
-    justify-content: space-evenly;
-}
-
-.manage-btn {
-    height: 30px;
-    margin-top: 20px;
-    margin-left: 10px;
+.name-div {
+    width: 40%;
 }
 
 .manage-btn:hover {
@@ -153,6 +145,15 @@
     color: #eee;
     border-radius: 10px;
     padding: 5px;
+    font-family: Cutive, serif;
+    font-size: 0.8rem;
+}
+
+.buttons--div {
+    width: 30%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .dashboard-container {
@@ -175,25 +176,27 @@
 } */
 
 @keyframes spin {
-	to { transform: rotate(1turn); }
+    to {
+        transform: rotate(1turn);
+    }
 }
 
 .progress {
     position: absolute;
-	display: inline-block;
-	width: 5em;
-	height: 5em;
-	margin: 0 .5em;
-	font-size: 12px;
-	text-indent: 999em;
-	overflow: hidden;
-	animation: spin 1s infinite steps(8);
+    display: inline-block;
+    width: 5em;
+    height: 5em;
+    margin: 0 .5em;
+    font-size: 12px;
+    text-indent: 999em;
+    overflow: hidden;
+    animation: spin 1s infinite steps(8);
     left: 50%;
     top: 50%;
 }
 
 .small.progress {
-	font-size: 6px;
+    font-size: 6px;
 }
 
 .medium.progress {
@@ -201,40 +204,40 @@
 }
 
 .large.progress {
-	font-size: 24px;
+    font-size: 24px;
 }
 
-.progress:before,
-.progress:after,
-.progress > div:before,
-.progress > div:after {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 2.25em; /* (container width - part width)/2  */
-	width: .5em;
-	height: 1.5em;
-	border-radius: .2em;
-	background: #eee;
-	box-shadow: 0 3.5em #eee; /* container height - part height */
-	transform-origin: 50% 2.5em; /* container height / 2 */
+.progress:before, .progress:after, .progress>div:before, .progress>div:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 2.25em;
+    /* (container width - part width)/2  */
+    width: .5em;
+    height: 1.5em;
+    border-radius: .2em;
+    background: #eee;
+    box-shadow: 0 3.5em #eee;
+    /* container height - part height */
+    transform-origin: 50% 2.5em;
+    /* container height / 2 */
 }
 
 .progress:before {
-	background: #555;
+    background: #555;
 }
 
 .progress:after {
-	transform: rotate(-45deg);
-	background: #777;
+    transform: rotate(-45deg);
+    background: #777;
 }
 
-.progress > div:before {
-	transform: rotate(-90deg);
-	background: #999;
+.progress>div:before {
+    transform: rotate(-90deg);
+    background: #999;
 }
 
-.progress > div:after {
-	transform: rotate(-135deg);
-	background: #bbb;
+.progress>div:after {
+    transform: rotate(-135deg);
+    background: #bbb;
 }

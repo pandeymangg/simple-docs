@@ -114,9 +114,9 @@ const Home = (props) => {
             </h1> */}
 
             {
-                loading === true 
-                ? <div className="medium progress"><div>Loading…</div></div>
-                : null
+                loading === true
+                    ? <div className="medium progress"><div>Loading…</div></div>
+                    : null
             }
 
             {
@@ -193,45 +193,48 @@ const Home = (props) => {
                                     return (
 
                                         <div className="single-doc" key={index} >
-                                            <div className="name-manage--div" >
+                                            <div className="name-div" >
                                                 <h3
                                                     className="heading-secondary doc-name"
                                                     onClick={id => viewDocHandler(doc._id)}
                                                 >
                                                     {doc.name}
                                                 </h3>
-
-                                                {
-                                                    // doc.collaborators.includes(currentUser._id)
-                                                    doc.owner === currentUser._id
-                                                        ? ( <span
-                                                                onClick={
-                                                                    (id) => manageDocumentHandler(
-                                                                        doc._id
-                                                                    )
-                                                                }
-                                                                className="material-icons manage-btn"
-                                                            >
-                                                                settings
-                                                            </span>
-                                                        )
-                                                        : null
-                                                }
                                             </div>
 
                                             {
                                                 doc.collaborators.includes(currentUser._id)
+                                                
                                                     ? <div className="user-role--div" >Collaborator</div>
+
                                                     : <div className="user-role--div" >Owner</div>
                                             }
 
+
                                             {
                                                 doc.collaborators.includes(currentUser._id)
-                                                    ? null
-                                                    : <span
+                                                    ? <div className="buttons--div" ></div>
+                                                    : (<div className="buttons--div" >
+
+                                                        <span
+                                                            onClick={
+                                                                (id) => manageDocumentHandler(
+                                                                    doc._id
+                                                                )
+                                                            }
+                                                            className="material-icons manage-btn"
+                                                        >
+                                                            settings
+                                                        </span>
+
+                                                        <span
                                                         className="material-icons delete-doc-icon"
                                                         onClick={(id) => deleteDocHandler(doc._id)}
-                                                    >delete</span>
+                                                            >delete
+                                                        </span>
+
+
+                                                    </div>)
                                             }
 
 
