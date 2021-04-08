@@ -64,21 +64,6 @@ exports.doesDocExist = async function (req, res, next) {
 exports.createNewDocument = async function (req, res) {
     try {
 
-        // const nameCheck = await DocModel.findOne(
-        //     {
-        //         name: req.body.name,
-        //         owner: req.user._id
-        //     }
-        // )
-
-        // if (nameCheck) {
-        //     res.status(400).json({
-        //         status: "fail",
-        //         message: "document of same name already exists!"
-        //     })
-        //     return
-        // }
-
         const newDoc = await DocModel.create(
             {
                 name: req.body.name,

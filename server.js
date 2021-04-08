@@ -27,7 +27,7 @@ dotenv.config({ path: "./config.env" })
 
 const { getAllDocs, createNewDocument, getSingleDoc, updateDoc, deleteDoc, doesDocExist, getSingleDocPopulated } = require('./controllers/docController')
 
-const { signup, login, protect, isOwnerOrCollaborator, isLoggedIn, logout, acceptRequest, isCollaborator, isOwner, createAccessNotification, getOwner, getNotifications, deleteNotification, getUser, removeCollaborator } = require('./controllers/authController')
+const { signup, login, protect, isOwnerOrCollaborator, isLoggedIn, logout, acceptRequest, isCollaborator, isOwner, createAccessNotification, getOwner, getNotifications, deleteNotification, getUser, removeCollaborator, doesNotificationExist } = require('./controllers/authController')
 
 
 const DB = process.env.DB.replace(
@@ -73,7 +73,7 @@ app.get('/api/users/isLoggedIn', isLoggedIn)
 
 app.get('/api/users/logout', logout)
 
-app.post('/api/users/notifications/requestAccess', protect, createAccessNotification)
+app.post('/api/users/notifications/requestAccess', protect, doesNotificationExist, createAccessNotification)
 
 app.get('/api/users/notifications', protect, getNotifications)
 

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import AuthContext from '../context/AuthContext'
 import LogoutButton from './LogoutButton'
 import './Navbar.css'
@@ -12,6 +12,8 @@ const Navbar = () => {
     const { loggedIn, currentUser } = useContext(AuthContext)
 
     const [notificationsArrayLength, setNotificationsArrayLength] = useState([])
+
+    const history = useHistory()
 
     async function getNotificationsLength() {
         try {
@@ -69,7 +71,9 @@ const Navbar = () => {
 
                     {
                         loggedIn ?
-                            <h1 className="main-heading"><span style={{ color: '#623C3D' }} >simple</span><span style={{ color: '#6B645C' }} >Docs</span></h1>
+                            <div  style={{ cursor: "pointer" }} onClick={ () => history.push("/dashboard") } >
+                                <h1 className="main-heading"><span style={{ color: '#623C3D' }} >simple</span><span style={{ color: '#6B645C' }} >Docs</span></h1> 
+                            </div>
                             : null
                     }
 

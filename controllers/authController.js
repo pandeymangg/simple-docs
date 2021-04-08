@@ -314,7 +314,7 @@ exports.removeCollaborator = async function (req, res) {
     try {
         const doc = await DocModel.findById(req.params.id)
 
-        if(!doc) {
+        if (!doc) {
             res.status(400).json({
                 status: "fail",
                 message: "no such document exists"
@@ -322,7 +322,7 @@ exports.removeCollaborator = async function (req, res) {
             return
         }
 
-        if(!doc.collaborators) {
+        if (!doc.collaborators) {
             res.status(400).json({
                 status: "fail",
                 message: "This document does not have any collaborators!"
@@ -331,14 +331,14 @@ exports.removeCollaborator = async function (req, res) {
         }
 
         let collaboratorsArray = [...doc.collaborators]
-        
+
         //console.log(collaboratorsArray)
         //const index = collaboratorsArray.indexOf(req.body.collabId)
         const index = collaboratorsArray.findIndex(id => id.equals(req.body.collabId))
 
         //console.log(index)
 
-        if(index === -1)  {
+        if (index === -1) {
             res.status(400).json({
                 status: "fail",
                 message: "this user is not a collaborator"
@@ -358,7 +358,7 @@ exports.removeCollaborator = async function (req, res) {
         })
 
 
-    } catch(err) {
+    } catch (err) {
         res.status(400).json({
             status: "fail",
             message: err.message
@@ -423,8 +423,9 @@ exports.acceptRequest = async function (req, res) {
     }
 }
 
-exports.createAccessNotification = async function (req, res) {
+exports.doesNotificationExist = async function (req, res, next) {
     try {
+
         const docId = req.body.docId
         const senderId = req.user._id
 
@@ -475,20 +476,52 @@ exports.createAccessNotification = async function (req, res) {
 
         const notification = `User ${sender.username} has requested access for the document ${doc.name}`
 
-        // const notificationArray = [...owner.notifications]
+        const newNotification = await NotificationModel.findOne({
+            type: "access request",
+            reciever: owner._id,
+            sender: req.user._id,
+            doc: docId,
+            notification: notification
+        })
 
-        // notificationArray.push({
-        //     type: "access request",
-        //     senderId,
-        //     docId,
-        //     notification
-        // })
+        if(newNotification) {
+            res.status(400).json({
+                status: "fail",
+                message: "Notification already exists"
+            })
 
-        // const updatedUser = await UserModel.findByIdAndUpdate(req.params.userId, {
-        //     notifications: notificationArray
-        // }, {new: true})
+            return
+        }
 
-        //console.log(updatedUser)
+        req.doc = doc
+        req.docOwner = owner
+        next()
+
+    } catch (err) {
+        res.status(400).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+}
+
+exports.createAccessNotification = async function (req, res) {
+    try {
+
+        const docId = req.body.docId
+        const doc = req.doc
+        const owner = req.docOwner
+        const sender = req.user
+
+        if (!owner) {
+            res.status(400).json({
+                status: "fail",
+                message: "no user exists"
+            })
+            return
+        }
+
+        const notification = `User ${sender.username} has requested access for the document ${doc.name}`
 
         const newNotification = await NotificationModel.create({
             type: "access request",
@@ -545,7 +578,7 @@ exports.deleteNotification = async function (req, res) {
             message: "notification deleted!"
         })
 
-    } catch(err) {
+    } catch (err) {
         res.status(400).json({
             status: "fail",
             message: err.message
