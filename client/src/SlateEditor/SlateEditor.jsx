@@ -31,8 +31,10 @@ const SlateEditor = (props) => {
   const editor = useMemo(() => withReact(createEditor()), [])
   const [value, setValue] = useState([])
 
+  const [timer, setTimer] = useState()
+
   const { loggedIn } = useContext(AuthContext)
-  
+
   useEffect(() => {
     if (loggedIn) {
       if (!idCopy) {
@@ -162,29 +164,113 @@ const SlateEditor = (props) => {
         (value) => {
           setValue(value)
         }
-      }>
+      }
+      >
 
         <div className="toolbar" >
 
-          <MarkButton format="bold" icon="format_bold" />
-          <MarkButton format="italic" icon="format_italic" />
-          <MarkButton format="underline" icon="format_underline" />
-          <MarkButton format="code" icon="code" />
-          <MarkButton format="uppercase" icon="keyboard_arrow_up" />
-          <MarkButton format="lowercase" icon="keyboard_arrow_down" />
+          <MarkButton format="bold" icon="format_bold"
+            saveDoc={saveDocHandler}
+            timer={timer}
+            setTimer={setTimer} />
 
-          <BlockButton format="heading-one" icon="looks_one" />
-          <BlockButton format="heading-two" icon="looks_two" />
-          <BlockButton format="left" icon="format_align_left" />
-          <BlockButton format="center" icon="format_align_center" />
-          <BlockButton format="right" icon="format_align_right" />
-          <BlockButton format="justify" icon="format_align_justify" />
+          <MarkButton format="italic" icon="format_italic"
+            saveDoc={saveDocHandler}
+            timer={timer}
+            setTimer={setTimer}
+          />
+
+          <MarkButton format="underline" icon="format_underline"
+            saveDoc={saveDocHandler}
+            timer={timer}
+            setTimer={setTimer}
+          />
+
+          <MarkButton format="code" icon="code"
+            saveDoc={saveDocHandler}
+            timer={timer}
+            setTimer={setTimer}
+          />
+
+          <MarkButton format="uppercase" icon="keyboard_arrow_up"
+            saveDoc={saveDocHandler}
+            timer={timer}
+            setTimer={setTimer}
+          />
+
+          <MarkButton format="lowercase" icon="keyboard_arrow_down"
+            saveDoc={saveDocHandler}
+            timer={timer}
+            setTimer={setTimer}
+          />
+
+
+          <BlockButton format="heading-one" icon="looks_one"
+            saveDoc={saveDocHandler}
+            timer={timer}
+            setTimer={setTimer}
+          />
+
+          <BlockButton format="heading-two" icon="looks_two"
+            saveDoc={saveDocHandler}
+            timer={timer}
+            setTimer={setTimer}
+          />
+
+          <BlockButton format="left" icon="format_align_left"
+            saveDoc={saveDocHandler}
+            timer={timer}
+            setTimer={setTimer}
+          />
+
+          <BlockButton format="center" icon="format_align_center"
+            saveDoc={saveDocHandler}
+            timer={timer}
+            setTimer={setTimer}
+          />
+
+          <BlockButton format="right" icon="format_align_right"
+            saveDoc={saveDocHandler}
+            timer={timer}
+            setTimer={setTimer}
+          />
+
+          <BlockButton format="justify" icon="format_align_justify"
+            saveDoc={saveDocHandler}
+            timer={timer}
+            setTimer={setTimer}
+          />
 
         </div>
 
         <Editable
           renderElement={renderElement}
           renderLeaf={renderLeaf}
+
+          onKeyUp={
+            () => {
+              if (timer) {
+                window.clearTimeout(timer)
+              }
+
+              setTimer(setTimeout(() => {
+                //console.log("done")
+                saveDocHandler()
+              }, 1000))
+
+            }
+          }
+
+          onKeyPress={
+            () => {
+              if (timer) {
+                window.clearTimeout(timer)
+              }
+              //console.log("typing")
+            }
+          }
+
+
           onKeyDown={event => {
 
             if (!event.ctrlKey) {
@@ -223,7 +309,7 @@ const SlateEditor = (props) => {
   )
 }
 
-const MarkButton = ({ format, icon }) => {
+const MarkButton = ({ format, icon, saveDoc, timer, setTimer }) => {
   const editor = useSlate()
   return (
     <Button
@@ -231,13 +317,24 @@ const MarkButton = ({ format, icon }) => {
       onMouseDown={(e) => {
         e.preventDefault()
         toggleMark(editor, format)
+
+        if (timer) {
+          window.clearTimeout(timer)
+        }
+
+        setTimer(setTimeout(() => {
+          //console.log("done")
+          saveDoc()
+        }, 1000))
+
       }}
+
       icon={icon}
     />
   )
 }
 
-const BlockButton = ({ format, icon }) => {
+const BlockButton = ({ format, icon, saveDoc, timer, setTimer }) => {
   const editor = useSlate()
   return (
     <Button
@@ -245,6 +342,16 @@ const BlockButton = ({ format, icon }) => {
       onMouseDown={(e) => {
         e.preventDefault()
         toggleBlock(editor, format)
+
+        if (timer) {
+          window.clearTimeout(timer)
+        }
+
+        setTimer(setTimeout(() => {
+          //console.log("done")
+          saveDoc()
+        }, 1000))
+
       }}
       icon={icon}
     />
