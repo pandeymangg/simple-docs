@@ -85,6 +85,7 @@ const SlateEditor = (props) => {
   const saveDocHandler = () => {
     async function saveDoc() {
       try {
+        //console.log("in save, value: ", value)
         //const docId = props.location.state.docId
         await axios.patch(`/api/docs/${docId}`, {
           content: value
@@ -169,7 +170,32 @@ const SlateEditor = (props) => {
 
         <div className="toolbar" >
 
-          <MarkButton format="bold" icon="format_bold"
+          <MarkButton format="bold" icon="format_bold" />
+
+          <MarkButton format="italic" icon="format_italic"/>
+
+          <MarkButton format="underline" icon="format_underline"/>
+
+          <MarkButton format="code" icon="code"/>
+
+          <MarkButton format="uppercase" icon="keyboard_arrow_up"/>
+
+          <MarkButton format="lowercase" icon="keyboard_arrow_down"/>
+
+
+          <BlockButton format="heading-one" icon="looks_one"/>
+
+          <BlockButton format="heading-two" icon="looks_two"/>
+
+          <BlockButton format="left" icon="format_align_left"/>
+
+          <BlockButton format="center" icon="format_align_center"/>
+
+          <BlockButton format="right" icon="format_align_right"/>
+
+          <BlockButton format="justify" icon="format_align_justify"/>
+
+          {/* <MarkButton format="bold" icon="format_bold"
             saveDoc={saveDocHandler}
             timer={timer}
             setTimer={setTimer} />
@@ -239,7 +265,7 @@ const SlateEditor = (props) => {
             saveDoc={saveDocHandler}
             timer={timer}
             setTimer={setTimer}
-          />
+          /> */}
 
         </div>
 
@@ -309,7 +335,7 @@ const SlateEditor = (props) => {
   )
 }
 
-const MarkButton = ({ format, icon, saveDoc, timer, setTimer }) => {
+const MarkButton = ({ format, icon }) => {
   const editor = useSlate()
   return (
     <Button
@@ -318,14 +344,15 @@ const MarkButton = ({ format, icon, saveDoc, timer, setTimer }) => {
         e.preventDefault()
         toggleMark(editor, format)
 
-        if (timer) {
-          window.clearTimeout(timer)
-        }
+        // if (timer) {
+        //   window.clearTimeout(timer)
+        // }
 
-        setTimer(setTimeout(() => {
-          //console.log("done")
-          saveDoc()
-        }, 1000))
+        // setTimer(setTimeout(() => {
+        //   //console.log("done")
+        //   console.log("in the timeout")
+        //   saveDoc()
+        // }, 1000))
 
       }}
 
@@ -334,7 +361,7 @@ const MarkButton = ({ format, icon, saveDoc, timer, setTimer }) => {
   )
 }
 
-const BlockButton = ({ format, icon, saveDoc, timer, setTimer }) => {
+const BlockButton = ({ format, icon}) => {
   const editor = useSlate()
   return (
     <Button
@@ -342,15 +369,6 @@ const BlockButton = ({ format, icon, saveDoc, timer, setTimer }) => {
       onMouseDown={(e) => {
         e.preventDefault()
         toggleBlock(editor, format)
-
-        if (timer) {
-          window.clearTimeout(timer)
-        }
-
-        setTimer(setTimeout(() => {
-          //console.log("done")
-          saveDoc()
-        }, 1000))
 
       }}
       icon={icon}
@@ -364,12 +382,14 @@ const isMarkActive = (editor, format) => {
   return returnValue
 }
 
-const toggleMark = (editor, format) => {
+const toggleMark = (editor, format, saveDoc, timer, setTimer) => {
   const isActive = isMarkActive(editor, format)
 
   if (isActive) {
+    //console.log("in the toggler")
     Editor.removeMark(editor, format)
   } else {
+    //console.log("in the toggler")
     Editor.addMark(editor, format, true)
   }
 
