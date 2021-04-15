@@ -33,6 +33,8 @@ const SlateEditor = (props) => {
 
   const [timer, setTimer] = useState()
 
+  const [saved, setSaved] = useState()
+
   const { loggedIn } = useContext(AuthContext)
 
   useEffect(() => {
@@ -47,9 +49,7 @@ const SlateEditor = (props) => {
 
             setValue(doc.data.data.doc.content)
             setTitle(doc.data.data.doc.name)
-
-
-
+            setSaved(true)
           } catch (err) {
             //console.log(err)
             setErrorStatus(err.response.status)
@@ -82,7 +82,7 @@ const SlateEditor = (props) => {
 
   }, [])
 
-  const saveDocHandler = () => {
+  const saveDocHandler = (value) => {
     async function saveDoc() {
       try {
         //console.log("in save, value: ", value)
@@ -90,6 +90,8 @@ const SlateEditor = (props) => {
         await axios.patch(`/api/docs/${docId}`, {
           content: value
         })
+
+        setSaved(true)
         //console.log(updatedDoc)
       } catch (err) {
         //console.log(err.response.data)
@@ -132,28 +134,21 @@ const SlateEditor = (props) => {
       }
 
       <div className="doc-info" >
-        <h3 className="doc-title" >Document Title: {title}</h3>
+        <h3 className="doc-title" >{title}</h3>
 
-        {/* {
-          collaborators
-          ? (
-            <select>
-              <option> Collaborators </option>
-              {
-                collaborators.map((collaborator, index) => {
-                  return (
-                    <option key={ index } disabled >
-                      { collaborator.username }
-                    </option>
-                  )
-                })
-              }
-            </select>
-          )
-          : null
-        } */}
+        <div>
+          {
+            saved
+            ? <p style={{ color: "green" }} >Saved</p> 
+            : <p></p> 
+          }
+        </div>
 
-        <button onClick={saveDocHandler} className="save-button">
+        <button
+          disabled={!value}
+          className="save-button"
+          onClick={() => saveDocHandler(value)}
+        >
           <span className="material-icons" >
             save
           </span>
@@ -164,13 +159,34 @@ const SlateEditor = (props) => {
       <Slate editor={editor} value={value} onChange={
         (value) => {
           setValue(value)
+          //setSaved(false)
+
+          //console.log(editor.operations)
+          editor.operations.filter(
+            operation => {
+              if(operation.type !== "set_selection" && operation.type!=="set_value") {
+                //console.log("performed")
+                const saveState = () => {
+                  if(saved) {
+                    setSaved(false)
+                    //console.log("saved: false")
+                  }
+                }
+
+                saveState()
+              }
+            }
+          )
+
+
+
         }
       }
       >
 
         <div className="toolbar" >
 
-          <MarkButton format="bold" icon="format_bold" />
+          {/* <MarkButton format="bold" icon="format_bold"/>
 
           <MarkButton format="italic" icon="format_italic"/>
 
@@ -193,9 +209,9 @@ const SlateEditor = (props) => {
 
           <BlockButton format="right" icon="format_align_right"/>
 
-          <BlockButton format="justify" icon="format_align_justify"/>
+          <BlockButton format="justify" icon="format_align_justify"/> */}
 
-          {/* <MarkButton format="bold" icon="format_bold"
+          <MarkButton format="bold" icon="format_bold"
             saveDoc={saveDocHandler}
             timer={timer}
             setTimer={setTimer} />
@@ -265,7 +281,7 @@ const SlateEditor = (props) => {
             saveDoc={saveDocHandler}
             timer={timer}
             setTimer={setTimer}
-          /> */}
+          />
 
         </div>
 
@@ -281,7 +297,7 @@ const SlateEditor = (props) => {
 
               setTimer(setTimeout(() => {
                 //console.log("done")
-                saveDocHandler()
+                saveDocHandler(value)
               }, 1000))
 
             }
@@ -335,7 +351,7 @@ const SlateEditor = (props) => {
   )
 }
 
-const MarkButton = ({ format, icon }) => {
+const MarkButton = ({ format, icon, saveDoc, timer, setTimer }) => {
   const editor = useSlate()
   return (
     <Button
@@ -343,16 +359,17 @@ const MarkButton = ({ format, icon }) => {
       onMouseDown={(e) => {
         e.preventDefault()
         toggleMark(editor, format)
+        //console.log(editor.children)
 
-        // if (timer) {
-        //   window.clearTimeout(timer)
-        // }
+        if (timer) {
+          window.clearTimeout(timer)
+        }
 
-        // setTimer(setTimeout(() => {
-        //   //console.log("done")
-        //   console.log("in the timeout")
-        //   saveDoc()
-        // }, 1000))
+        setTimer(setTimeout(() => {
+          //console.log("done")
+          //console.log("in the timeout")
+          saveDoc(editor.children)
+        }, 1000))
 
       }}
 
@@ -361,7 +378,7 @@ const MarkButton = ({ format, icon }) => {
   )
 }
 
-const BlockButton = ({ format, icon}) => {
+const BlockButton = ({ format, icon, saveDoc, timer, setTimer }) => {
   const editor = useSlate()
   return (
     <Button
@@ -369,7 +386,15 @@ const BlockButton = ({ format, icon}) => {
       onMouseDown={(e) => {
         e.preventDefault()
         toggleBlock(editor, format)
+        if (timer) {
+          window.clearTimeout(timer)
+        }
 
+        setTimer(setTimeout(() => {
+          //console.log("done")
+          //console.log("in the timeout")
+          saveDoc(editor.children)
+        }, 1000))
       }}
       icon={icon}
     />
@@ -382,14 +407,16 @@ const isMarkActive = (editor, format) => {
   return returnValue
 }
 
-const toggleMark = (editor, format, saveDoc, timer, setTimer) => {
+const toggleMark = (editor, format) => {
   const isActive = isMarkActive(editor, format)
 
   if (isActive) {
     //console.log("in the toggler")
     Editor.removeMark(editor, format)
+    //console.log(value)
   } else {
     //console.log("in the toggler")
+    //console.log(value)
     Editor.addMark(editor, format, true)
   }
 
