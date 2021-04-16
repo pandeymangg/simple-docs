@@ -8,7 +8,6 @@ a {
 }
 
 .navbar {
-    /* background-color: #C3C7BE; */
     background-color: #D9DBD6;
     color: #eee;
     height: 80px;
@@ -57,4 +56,17 @@ a {
     border-radius: 50%;
     background: red;
     color: white;
+}
+
+@media (max-width: 600px) {
+    .flex {
+        display: flex;
+        flex-direction: column;
+        height: fit-content;
+    }
+
+    .navbar {
+        height: fit-content;
+    }
+
 }
