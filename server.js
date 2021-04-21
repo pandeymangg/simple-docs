@@ -21,6 +21,11 @@ io.on('connection', (socket) => {
         io.emit("notification-deleted-recieved", data)
     })
 
+    socket.on("new-operations", (data) => {
+        //console.log(data)
+        io.emit('new-remote-operations', data)
+    })
+
 })
 
 dotenv.config({ path: "./config.env" })
