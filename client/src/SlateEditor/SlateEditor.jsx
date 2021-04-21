@@ -92,7 +92,7 @@ const SlateEditor = (props) => {
         })
 
         setSaved(true)
-        //console.log(updatedDoc)
+        console.log(updatedDoc)
       } catch (err) {
         //console.log(err.response.data)
         //console.log(err)
