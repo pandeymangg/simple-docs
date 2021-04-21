@@ -9,7 +9,7 @@ The plan is to create a full-fledged docs application with a good rich-text edit
 3. Documents CRUD Operations.
 4. Other users can be added / removed as collaborators!
 5. Live notifications with badges.
-
+6. Live editing (Collaboration) with users.
 
 ## Installation
 1. Clone the repository.
