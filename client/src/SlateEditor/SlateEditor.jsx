@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState, useRef } from 'react'
 import { createEditor, Editor, Transforms, Element as SlateElement } from 'slate'
 import { Slate, Editable, withReact, useSlate } from 'slate-react'
 import Elements from './Elements'
@@ -8,7 +8,9 @@ import Button from './Buttons/Button'
 import axios from 'axios'
 import AuthContext from '../context/AuthContext'
 import { Redirect } from 'react-router'
+import socketIoClient from 'socket.io-client'
 
+const socket = socketIoClient()
 
 const SlateEditor = (props) => {
 
@@ -37,6 +39,8 @@ const SlateEditor = (props) => {
 
   const { loggedIn } = useContext(AuthContext)
 
+  const id = useRef(Date.now().toString() + "::UID")
+
   useEffect(() => {
     if (loggedIn) {
       if (!idCopy) {
@@ -58,6 +62,30 @@ const SlateEditor = (props) => {
         }
 
         getSingleDoc()
+
+
+        socket.on('new-remote-operations', ({ editorId, operations, documentId }) => {
+          if (editorId !== id.current && documentId === docId) {
+            //console.log("Change happened in the other editor!")
+
+            // Editor.withoutNormalizing(editor, () => {
+            //   ops.forEach(op => {
+            //     editor.apply(op);
+            //   });
+            // })
+
+            Editor.withoutNormalizing(editor, () => {
+              operations.forEach(operation => {
+                if (editor !== null) {
+                  editor.apply(operation)
+                } else {
+                  console.log("its null!")
+                }
+              })
+            })
+          }
+        })
+
 
       }
     }
@@ -139,8 +167,8 @@ const SlateEditor = (props) => {
         <div>
           {
             saved
-            ? <p style={{ color: "green" }} >Saved</p> 
-            : <p></p> 
+              ? <p style={{ color: "green" }} >Saved</p>
+              : <p></p>
           }
         </div>
 
@@ -162,12 +190,12 @@ const SlateEditor = (props) => {
           //setSaved(false)
 
           //console.log(editor.operations)
-          editor.operations.filter(
+          editor.operations.map(
             operation => {
-              if(operation.type !== "set_selection" && operation.type!=="set_value") {
+              if (operation.type !== "set_selection" && operation.type !== "set_value") {
                 //console.log("performed")
                 const saveState = () => {
-                  if(saved) {
+                  if (saved) {
                     setSaved(false)
                     //console.log("saved: false")
                   }
@@ -179,6 +207,31 @@ const SlateEditor = (props) => {
           )
 
 
+          const filterOps = editor.operations.filter(o => {
+            //console.log(o)
+            if (o === null) {
+              //console.log("this was null")
+              return false
+            }
+
+            const is_sourced = (o.data != null) && ("source" in o.data)
+            return (
+              o.type != "set_selection" &&
+              o.type != "set_value" &&
+              (!is_sourced)
+            )
+
+          })
+            .map(o => ({ ...o, data: { source: "one" } }))
+
+          //console.log(filterOps)
+          if (filterOps.length > 0) {
+            socket.emit("new-operations", {
+              editorId: id.current,
+              operations: filterOps,
+              documentId: docId
+            })
+          }
 
         }
       }
@@ -187,28 +240,16 @@ const SlateEditor = (props) => {
         <div className="toolbar" >
 
           {/* <MarkButton format="bold" icon="format_bold"/>
-
           <MarkButton format="italic" icon="format_italic"/>
-
           <MarkButton format="underline" icon="format_underline"/>
-
           <MarkButton format="code" icon="code"/>
-
           <MarkButton format="uppercase" icon="keyboard_arrow_up"/>
-
           <MarkButton format="lowercase" icon="keyboard_arrow_down"/>
-
-
           <BlockButton format="heading-one" icon="looks_one"/>
-
           <BlockButton format="heading-two" icon="looks_two"/>
-
           <BlockButton format="left" icon="format_align_left"/>
-
           <BlockButton format="center" icon="format_align_center"/>
-
           <BlockButton format="right" icon="format_align_right"/>
-
           <BlockButton format="justify" icon="format_align_justify"/> */}
 
           <MarkButton format="bold" icon="format_bold"
