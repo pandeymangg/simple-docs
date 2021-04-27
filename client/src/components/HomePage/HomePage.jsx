@@ -32,8 +32,9 @@ const HomePage = () => {
                         
                         With a simple rich text editor made with slatejs!
                         Manage documents easily without any hassle.
-                        Users can now also be added as collaborators.
-                        Live collaboration soon to be added as a feature!
+                        Users can now also be added / removed as collaborators.
+                        With live notifications and badges.
+                        Live collaboration is now a feature!
 
                     </p>
 
