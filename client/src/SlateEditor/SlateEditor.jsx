@@ -22,9 +22,7 @@ const SlateEditor = (props) => {
     }
   }
 
-  //const [docId, setDocId] = useState(props.location.state.docId)
   const [docId] = useState(idCopy)
-  //const [doc, setDoc] = useState()
   const [title, setTitle] = useState("")
   const [idStatus, setIdStatus] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
@@ -46,16 +44,13 @@ const SlateEditor = (props) => {
       if (!idCopy) {
         setIdStatus("false")
       } else {
-        //console.log(currentUser)
         async function getSingleDoc() {
           try {
             const doc = await axios.get(`/api/docs/${docId}`)
-
             setValue(doc.data.data.doc.content)
             setTitle(doc.data.data.doc.name)
             setSaved(true)
           } catch (err) {
-            //console.log(err)
             setErrorStatus(err.response.status)
             setErrorMessage(err.response.data.message)
           }
@@ -63,17 +58,8 @@ const SlateEditor = (props) => {
 
         getSingleDoc()
 
-
         socket.on('new-remote-operations', ({ editorId, operations, documentId }) => {
           if (editorId !== id.current && documentId === docId) {
-            //console.log("Change happened in the other editor!")
-
-            // Editor.withoutNormalizing(editor, () => {
-            //   ops.forEach(op => {
-            //     editor.apply(op);
-            //   });
-            // })
-
             Editor.withoutNormalizing(editor, () => {
               operations.forEach(operation => {
                 if (editor !== null) {
@@ -113,17 +99,12 @@ const SlateEditor = (props) => {
   const saveDocHandler = (value) => {
     async function saveDoc() {
       try {
-        //console.log("in save, value: ", value)
-        //const docId = props.location.state.docId
         await axios.patch(`/api/docs/${docId}`, {
           content: value
         })
 
         setSaved(true)
-        //console.log(updatedDoc)
       } catch (err) {
-        //console.log(err.response.data)
-        //console.log(err)
         setErrorStatus(err.response.status)
         setErrorMessage(err.response.data.message)
       }
@@ -135,11 +116,6 @@ const SlateEditor = (props) => {
   return (
 
     <div className="base-div" >
-
-      {/* {
-        loggedIn && errorMessage !== "" ? <Redirect to={{ pathname: 'error', state: { message: errorMessage, statusCode: errorStatus } }} />
-          : null
-      } */}
 
       {
         loggedIn && errorMessage === "You are not authorised to access this document!"
@@ -238,19 +214,6 @@ const SlateEditor = (props) => {
       >
 
         <div className="toolbar" >
-
-          {/* <MarkButton format="bold" icon="format_bold"/>
-          <MarkButton format="italic" icon="format_italic"/>
-          <MarkButton format="underline" icon="format_underline"/>
-          <MarkButton format="code" icon="code"/>
-          <MarkButton format="uppercase" icon="keyboard_arrow_up"/>
-          <MarkButton format="lowercase" icon="keyboard_arrow_down"/>
-          <BlockButton format="heading-one" icon="looks_one"/>
-          <BlockButton format="heading-two" icon="looks_two"/>
-          <BlockButton format="left" icon="format_align_left"/>
-          <BlockButton format="center" icon="format_align_center"/>
-          <BlockButton format="right" icon="format_align_right"/>
-          <BlockButton format="justify" icon="format_align_justify"/> */}
 
           <MarkButton format="bold" icon="format_bold"
             saveDoc={saveDocHandler}
@@ -400,15 +363,11 @@ const MarkButton = ({ format, icon, saveDoc, timer, setTimer }) => {
       onMouseDown={(e) => {
         e.preventDefault()
         toggleMark(editor, format)
-        //console.log(editor.children)
-
         if (timer) {
           window.clearTimeout(timer)
         }
 
         setTimer(setTimeout(() => {
-          //console.log("done")
-          //console.log("in the timeout")
           saveDoc(editor.children)
         }, 1000))
 
@@ -432,8 +391,6 @@ const BlockButton = ({ format, icon, saveDoc, timer, setTimer }) => {
         }
 
         setTimer(setTimeout(() => {
-          //console.log("done")
-          //console.log("in the timeout")
           saveDoc(editor.children)
         }, 1000))
       }}
@@ -452,12 +409,8 @@ const toggleMark = (editor, format) => {
   const isActive = isMarkActive(editor, format)
 
   if (isActive) {
-    //console.log("in the toggler")
     Editor.removeMark(editor, format)
-    //console.log(value)
   } else {
-    //console.log("in the toggler")
-    //console.log(value)
     Editor.addMark(editor, format, true)
   }
 
@@ -486,11 +439,5 @@ const toggleBlock = (editor, format) => {
   )
 }
 
-// const initialValue = [
-//   {
-//     type: 'paragraph',
-//     children: [{ text: 'A line of text in a paragraph.' }],
-//   },
-// ]
 
 export default SlateEditor;
