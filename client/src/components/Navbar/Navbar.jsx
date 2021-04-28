@@ -1,8 +1,8 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import AuthContext from '../context/AuthContext'
-import LogoutButton from './LogoutButton'
+import AuthContext from '../../context/AuthContext'
+import LogoutButton from '../LogoutButton'
 import './Navbar.css'
 import { io } from 'socket.io-client'
 

@@ -2,11 +2,13 @@ import axios from "axios"
 import { useEffect, useRef, useState } from "react"
 import './ManageDoc.css'
 import { Redirect } from 'react-router-dom'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+import CollabListItem from '../CollabListItem/CollabListItem'
 
 const ManageDoc = (props) => {
 
     const stateProp = props.location.state ? props.location.state.id : null
-    //const [state] = useState(props.location.state)
     const [id] = useState(stateProp)
     const [inputTerm, setInputTerm] = useState("")
     const [title, setTitle] = useState("")
@@ -17,29 +19,8 @@ const ManageDoc = (props) => {
     async function getInitialStates() {
         const response = await axios.get(`/api/docs/populated/${id}`)
 
-        //console.log(response.data.data.doc.name)
-        //console.log(response.data.data.doc)
-        //const collabs = response.data.data.doc.collaborators
-
         setTitle(response.data.data.doc.name)
         setCollaborators(response.data.data.doc.collaborators)
-
-        //let usersArray = []
-        // collabs.map(
-        //     async collabId => {
-        //         const response = await axios.get(
-        //             `/api/users/getUser/${collabId}`
-        //         )
-        //         //console.log(response.data.username)
-        //         //usersArray.push({ id: collabId, username: response.data.username })
-        //         setCollaborators(
-        //             (prevState) => {
-        //                 return [...prevState, { id: collabId, username: response.data.username }]
-        //             }
-        //         )
-
-        //     }
-        // )
 
         setLoading(false)
     }
@@ -70,6 +51,12 @@ const ManageDoc = (props) => {
                 //console.log(response.data)
 
                 setTitle(inputTerm)
+
+                toast.success("Document Renamed!", {
+                    position: toast.POSITION.TOP_LEFT,
+                    autoClose: 2000
+                })
+
                 setInputTerm("")
                 inputRef.current.value = ""
                 setErrorMessage("")
@@ -99,6 +86,11 @@ const ManageDoc = (props) => {
                             return prevState.filter(ele => ele._id !== collaborator._id)
                         }
                     )
+
+                    toast.error("Collaborator Removed!", {
+                        position: toast.POSITION.TOP_LEFT,
+                        autoClose: 2000
+                    })
                 }
 
             } catch (err) {
@@ -156,9 +148,6 @@ const ManageDoc = (props) => {
                                                             onClick={ () => viewDocHandler(id) }
                                                         > {title} </label>
 
-                                                        {/* {
-                                errorMessage !== "" && <div className="error-box-home" > <p className="error-text-home" > {errorMessage} </p> </div>
-                            } */}
 
                                                     </div>
 
@@ -181,30 +170,6 @@ const ManageDoc = (props) => {
                                                 </form>
                                             </div>
 
-                                            {/* <h3>{title}</h3>
-
-                {
-                    errorMessage
-                        ? (<div>
-                            {errorMessage}
-                        </div>)
-                        : null
-                }
-
-                <form
-                    onSubmit={
-                        (e) => {
-                            e.preventDefault()
-                            updateNameHandler(inputTerm)
-                        }
-                    }
-                >
-                    <input type="text" placeholder="enter new name" ref={inputRef}
-                        onChange={(e) => setInputTerm(e.target.value)}
-                    />
-                    <button type="submit" disabled={!inputTerm} >Update</button>
-                </form> */}
-
                                             <div className="docs-card" >
 
                                                 <div className="saved-docs-div" >
@@ -218,18 +183,11 @@ const ManageDoc = (props) => {
                                                     collaborators.map(
                                                         (collaborator, index) => {
                                                             return (
-                                                                <div key={index} className="collaborators-div" >
-                                                                    <div className="username-div" >
-                                                                        <p>{collaborator.username}</p>
-                                                                    </div>
-                                                                    <span className="material-icons remove-btn"
-                                                                        onClick={
-                                                                            () => {
-                                                                                removeCollab(collaborator)
-                                                                            }
-                                                                        }
-                                                                    >close</span>
-                                                                </div>
+                                                                <CollabListItem
+                                                                    key={index}
+                                                                    collaborator={collaborator}
+                                                                    removeCollab={removeCollab}
+                                                                />
                                                             )
                                                         }
                                                     )

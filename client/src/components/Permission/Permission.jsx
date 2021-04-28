@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useContext, useRef, useState } from "react"
 import { Redirect } from "react-router"
-import AuthContext from "../context/AuthContext"
+import AuthContext from "../../context/AuthContext"
 import './Permission.css'
 import { useHistory } from 'react-router-dom'
 

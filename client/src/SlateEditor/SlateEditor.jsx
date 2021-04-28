@@ -71,8 +71,6 @@ const SlateEditor = (props) => {
             })
           }
         })
-
-
       }
     }
 
@@ -166,7 +164,7 @@ const SlateEditor = (props) => {
           //setSaved(false)
 
           //console.log(editor.operations)
-          editor.operations.map(
+          editor.operations.forEach(
             operation => {
               if (operation.type !== "set_selection" && operation.type !== "set_value") {
                 //console.log("performed")
@@ -192,8 +190,8 @@ const SlateEditor = (props) => {
 
             const is_sourced = (o.data != null) && ("source" in o.data)
             return (
-              o.type != "set_selection" &&
-              o.type != "set_value" &&
+              o.type !== "set_selection" &&
+              o.type !== "set_value" &&
               (!is_sourced)
             )
 

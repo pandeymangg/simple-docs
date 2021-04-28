@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useEffect, useState, useContext } from "react"
 import { Redirect } from "react-router"
-import AuthContext from "../context/AuthContext"
+import AuthContext from "../../context/AuthContext"
 import './Notifications.css'
 import { useHistory } from 'react-router-dom'
 import io from "socket.io-client"
